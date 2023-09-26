@@ -3,8 +3,9 @@ import tkinter as tk
 from config.style import *
 import locale
 from .layout.master import LayoutMaster
-from .layout.button import RightButton, LeftButton
-from .layout.label import CustomLabel, LeftLabel
+from .component.button import RightButton, LeftButton
+from .component.label import CustomLabel, LeftLabel
+import pages.init as ps
 
 class FuelSelection(tk.Frame):
   def __init__(self, parent, controller):
@@ -41,15 +42,16 @@ class FuelSelection(tk.Frame):
       onClick=lambda: controller.previous_page(self)
     )
     
-    self.bbm_handler(layout)
+    self.bbm_handler(layout, controller)
   
-  def bbm_handler(self, layout):
+  def bbm_handler(self, layout, controller):
     for widget in layout.right_top.winfo_children(): widget.destroy()
     for widget in layout.right_middle.winfo_children(): widget.destroy()
     
     for i in range(len(self.state['bbm'])):
       RightButton(
         container=layout.right_bottom if ((i + 1) % 3 == 0) else layout.right_middle if ((i + 1) % 2 == 0) else layout.right_top,
+        onClick=lambda: controller.show_page(ps.fuel_input.FuelInput),
         components=[
           CustomLabel(
             text = f"{self.state['bbm'][i]['name']} (subsidi)",
@@ -76,6 +78,4 @@ class FuelSelection(tk.Frame):
     return formatted_number
   
   def get_bbm_based_on_category(self, bbm, category):
-    print('testing::')
-    print(bbm)
     return list(filter(lambda it: it['category'] == category, bbm))

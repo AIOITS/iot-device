@@ -3,8 +3,8 @@ import tkinter as tk
 from config.style import *
 import locale
 from .layout.master import LayoutMaster
-from .layout.button import RightButton
-from .layout.label import CustomLabel, LeftLabel
+from .component.button import RightButton
+from .component.label import CustomLabel, LeftLabel
 import pages.init as ps
 
 class Welcome(tk.Frame):

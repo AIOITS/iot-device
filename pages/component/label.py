@@ -30,3 +30,19 @@ class LeftLabel:
                 bg=component.bg,
                 relief='flat',
             ).grid(row=row+index, column=0, sticky='w')
+            
+class CenterLabel:
+    def __init__(self, container, components, row=0, **kwargs):
+        frame = tk.Frame(container)
+        frame.configure(bg=COLOR_BLUE)
+        frame.grid(row=row, sticky='n', **kwargs)
+        
+        for index, component in enumerate(components):
+            Label(
+                frame,
+                text=component.text,
+                font=component.font,
+                fg=component.fg,
+                bg=component.bg,
+                relief='flat',
+            ).grid(row=row+index, column=0, sticky='n')
