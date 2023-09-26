@@ -5,6 +5,7 @@ import locale
 from .layout.master import LayoutMaster
 from .layout.button import RightButton
 from .layout.label import CustomLabel, LeftLabel
+import pages.init as ps
 
 class Welcome(tk.Frame):
   def __init__(self, parent, controller):
@@ -62,7 +63,7 @@ class Welcome(tk.Frame):
       padx=(PADDING_FROM_FRAME, 0),
     )
     
-    self.vehicle_handler(layout)
+    self.vehicle_handler(layout, controller)
     
     RightButton(
       container=layout.right_bottom,
@@ -72,16 +73,17 @@ class Welcome(tk.Frame):
           font = FONT_HEADING_3_BOLD,
         )
       ],
-      onClick=lambda: self.vehicle_handler(layout)
+      onClick=lambda: self.vehicle_handler(layout, controller)
     )
   
-  def vehicle_handler(self, layout):
+  def vehicle_handler(self, layout, controller):
     for widget in layout.right_top.winfo_children(): widget.destroy()
     for widget in layout.right_middle.winfo_children(): widget.destroy()    
     for i in range(self.state['vehicle_index'], self.state['vehicle_index']+2):
       if (i < len(self.state['user_data']['ktp']['stnk'])):
         RightButton(
           container=layout.right_top if (i % 2 == 0) else layout.right_middle,
+          onClick=lambda index=i: self.choose_vehicle(self.state['user_data']['ktp']['stnk'][index], controller),
           components=[
             CustomLabel(
               text = f"{self.state['user_data']['ktp']['stnk'][i]['merk']} {self.state['user_data']['ktp']['stnk'][i]['model']}",
@@ -96,6 +98,10 @@ class Welcome(tk.Frame):
         self.state['vehicle_index'] = i + 1
       else:
         self.state['vehicle_index'] = 0
+        
+  def choose_vehicle(self, vehicle_data, controller):
+    controller.set_cache('choosen-vehicle', vehicle_data)
+    controller.show_page(ps.fuel_selection.FuelSelection)
 
   def format_money(number):
     locale.setlocale(locale.LC_ALL, 'id_ID.UTF-8')

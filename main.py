@@ -8,7 +8,8 @@ import time
 
 pages = (
   ps.start.Start,
-  ps.welcome.Welcome
+  ps.welcome.Welcome,
+  ps.fuel_selection.FuelSelection
 )
 
 class MainApplication(Tk):
@@ -23,19 +24,23 @@ class MainApplication(Tk):
     self.container.configure(bg=COLOR_BLUE)
     
     self.frames = {} 
-    
-    for F in pages:
-      self.frames[F] = F(self.container, self)
-      self.frames[F].configure(bg=COLOR_BLUE)
-      self.frames[F].grid(row = 0, column = 0, sticky ="nsew")
+      
     self.show_page(ps.start.Start)
 
   def show_page(self, container):
-    frame = self.frames[container]
+    frame = container(self.container, self)
+    frame.configure(bg=COLOR_BLUE)
+    frame.grid(row = 0, column = 0, sticky ="nsew")
     frame.tkraise()
-    
-  def get_data(self, data):
-    return api.get(data)
+  
+  def previous_page(self, container):
+    container.destroy()
+  
+  def get_user_data(self, data):
+    return api.get_user_data(data)
+  
+  def get_data(self, query):
+    return api.get(query)
   
   def post_data(self, endpoint, body):
     return api.post(endpoint, body)
