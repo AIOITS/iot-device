@@ -27,8 +27,8 @@ class MainApplication(Tk):
       
     self.show_page(ps.start.Start)
 
-  def show_page(self, container):
-    frame = container(self.container, self)
+  def show_page(self, container, data=None):
+    frame = container(self.container, self, data)
     frame.configure(bg=COLOR_BLUE)
     frame.grid(row = 0, column = 0, sticky ="nsew")
     frame.tkraise()

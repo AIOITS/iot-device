@@ -8,7 +8,7 @@ from .component.label import CustomLabel, LeftLabel
 import pages.init as ps
 
 class Welcome(tk.Frame):
-  def __init__(self, parent, controller):
+  def __init__(self, parent, controller, data):
     tk.Frame.__init__(self, parent)
     self.grid(row = 0, column = 0)
     self.state = {
@@ -100,8 +100,7 @@ class Welcome(tk.Frame):
         self.state['vehicle_index'] = 0
         
   def choose_vehicle(self, vehicle_data, controller):
-    controller.set_cache('choosen-vehicle', vehicle_data)
-    controller.show_page(ps.fuel_selection.FuelSelection)
+    controller.show_page(ps.fuel_selection.FuelSelection, {"choosen_vehicle": vehicle_data})
 
   def format_money(number):
     locale.setlocale(locale.LC_ALL, 'id_ID.UTF-8')

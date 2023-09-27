@@ -5,15 +5,16 @@ import locale
 from .layout.fuel_input_template import FuelInputTemplate
 from .component.button import RightButton, LeftButton
 from .component.label import CustomLabel, LeftLabel, CenterLabel
-
+from .confirmation import Confirmation
 class FuelInput(tk.Frame):
-  def __init__(self, parent, controller):
+  def __init__(self, parent, controller, data):
     tk.Frame.__init__(self, parent)
     self.grid(row = 0, column = 0)
     self.state = {
       "vehicle_index": 0,
       "user_data": controller.get_cache("user-data"),
-      "choosen_vehicle": controller.get_cache("choosen-vehicle"),
+      "choosen_vehicle": data["choosen_vehicle"],
+      "choosen_bbm": data["choosen_bbm"],
     }
     
     layout = FuelInputTemplate(root=self)
@@ -43,7 +44,7 @@ class FuelInput(tk.Frame):
       layout.price,
       fg=COLOR_WHITE,
       bg=COLOR_BLUE,
-      width=16,
+      width=10,
       font=FONT_HEADING_1_BOLD,
       relief='flat',
       justify='center',
@@ -72,13 +73,20 @@ class FuelInput(tk.Frame):
           font = FONT_HEADING_2_BOLD,
         )
       ],
-      onClick=lambda: controller.previous_page(self)
+      onClick=lambda: controller.show_page(Confirmation, {
+        "choosen_vehicle": self.state["choosen_vehicle"],
+        "choosen_bbm": self.state["choosen_bbm"],
+        "expenses": self.get_numeric_value(self.entry.get()),
+      })
     )
   
   def format_money(self, number):
     locale.setlocale(locale.LC_ALL, 'id_ID.UTF-8')
     formatted_number = locale.format_string('%d', number, grouping=True)
     return formatted_number
+  
+  def get_numeric_value(self, input):
+    return float(''.join(filter(str.isdigit, input)))
   
   def format_and_update_entry(self, event):
     current_value = self.entry.get()

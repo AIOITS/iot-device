@@ -8,14 +8,14 @@ from .component.label import CustomLabel, LeftLabel
 import pages.init as ps
 
 class FuelSelection(tk.Frame):
-  def __init__(self, parent, controller):
+  def __init__(self, parent, controller, data):
     tk.Frame.__init__(self, parent)
     self.grid(row = 0, column = 0)
     self.state = {
       "vehicle_index": 0,
       "user_data": controller.get_cache("user-data"),
-      "choosen_vehicle": controller.get_cache("choosen-vehicle"),
-      "bbm": self.get_bbm_based_on_category(controller.get_cache("bbm"), controller.get_cache("choosen-vehicle")['bahan_bakar'])
+      "choosen_vehicle": data["choosen_vehicle"],
+      "bbm": self.get_bbm_based_on_category(controller.get_cache("bbm"), data["choosen_vehicle"]['bahan_bakar'])
     }
     
     layout = LayoutMaster(root=self)
@@ -51,7 +51,7 @@ class FuelSelection(tk.Frame):
     for i in range(len(self.state['bbm'])):
       RightButton(
         container=layout.right_bottom if ((i + 1) % 3 == 0) else layout.right_middle if ((i + 1) % 2 == 0) else layout.right_top,
-        onClick=lambda: controller.show_page(ps.fuel_input.FuelInput),
+        onClick=lambda index=i: controller.show_page(ps.fuel_input.FuelInput, {"choosen_vehicle": self.state["choosen_vehicle"], "choosen_bbm": self.state['bbm'][index]}),
         components=[
           CustomLabel(
             text = f"{self.state['bbm'][i]['name']} (subsidi)",

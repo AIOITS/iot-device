@@ -5,7 +5,7 @@ from config.style import *
 import pages.init as ps
 
 class Start(tk.Frame):
-  def __init__(self, parent, controller):
+  def __init__(self, parent, controller, data):
     tk.Frame.__init__(self, parent)
     
     user_data = controller.get_user_data(
