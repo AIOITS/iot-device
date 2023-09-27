@@ -1,14 +1,14 @@
 import requests
 
 class api():
-  # base_url = 'https://aioits-backend-q6ihv4us2q-uc.a.run.app'
-  base_url = 'http://localhost:8080'
+  base_url = 'https://aioits-backend-q6ihv4us2q-uc.a.run.app'
+  # base_url = 'http://localhost:8080'
   
   @staticmethod
   def get_user_data(data):
     query = '''
       query{
-        user(where: {id: {equals: 5}}){
+        user(where: {id: {equals: 1}}){
           %s
         }
       }
