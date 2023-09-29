@@ -5,6 +5,7 @@ import pages.init as ps
 from helper.api import api
 from helper.cache import Cache
 import time
+import locale
 
 pages = (
   ps.start.Start,
@@ -15,6 +16,7 @@ pages = (
 class MainApplication(Tk):
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs)
+    locale.setlocale(locale.LC_ALL, 'id_ID.UTF-8')
     self.title("My GUI App")
 
     self.container = tk.Frame(self)
@@ -54,7 +56,7 @@ class MainApplication(Tk):
 if __name__ == "__main__":
     app = MainApplication()
     app.configure(bg=COLOR_BLUE)
-    app.geometry("1280x800")
-    # app.attributes("-fullscreen", True)
+    # app.geometry("1280x800")
+    app.attributes("-fullscreen", True)
     app.wm_title("Welcome to AIOITS")
     app.mainloop()

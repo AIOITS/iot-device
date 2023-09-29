@@ -49,7 +49,8 @@ class Confirmation(tk.Frame):
           font = FONT_HEADING_3_REGULAR,
         )
       ],
-    )
+      padx=(PADDING_FROM_FRAME, 0),
+    ),
     
     LeftLabel(
       container=layout.content,
@@ -68,6 +69,7 @@ class Confirmation(tk.Frame):
             font = FONT_HEADING_2_BOLD,
           ),
       ],
+      padx=(PADDING_FROM_FRAME, 0),
     )
     
     LeftLabel(
@@ -83,7 +85,8 @@ class Confirmation(tk.Frame):
             font = FONT_HEADING_2_BOLD,
           )
       ],
-    )
+      padx=(PADDING_FROM_FRAME, 0),
+    ),
     
     LeftLabel(
       container=layout.content,
@@ -98,7 +101,8 @@ class Confirmation(tk.Frame):
             font = FONT_HEADING_2_BOLD,
           )
       ],
-    )
+      padx=(PADDING_FROM_FRAME, 0),
+    ),
     
     LeftLabel(
       container=layout.content,
@@ -109,11 +113,12 @@ class Confirmation(tk.Frame):
           ),
       components=[
         CustomLabel(
-            text = f"{'{:.3f}'.format(self.state['expenses']/self.state['choosen_bbm']['price_per_liter'])} Liter",
+            text = f"{self.format_decimal(self.state['expenses']/self.state['choosen_bbm']['price_per_liter'])} Liter",
             font = FONT_HEADING_2_BOLD,
           )
       ],
-    )
+      padx=(PADDING_FROM_FRAME, 0),
+    ),
     
     LeftLabel(
       container=layout.content,
@@ -128,7 +133,8 @@ class Confirmation(tk.Frame):
             font = FONT_HEADING_2_BOLD,
           )
       ],
-    )
+      padx=(PADDING_FROM_FRAME, 0),
+    ),
     
     CenterLabel(
       container=layout.instruction,
@@ -156,8 +162,22 @@ class Confirmation(tk.Frame):
         "amount": '{:.3f}'.format(self.state['expenses']/self.state['choosen_bbm']['price_per_liter']),
       })
     )
+    
+    RightButton(
+      container=layout.right_bottom,
+      components=[
+        CustomLabel(
+          text ="KEMBALI",
+          font = FONT_HEADING_2_BOLD,
+        )
+      ],
+      onClick=lambda: controller.previous_page(self)
+    )
   
   def format_money(self, number):
     locale.setlocale(locale.LC_ALL, 'id_ID.UTF-8')
     formatted_number = locale.format_string('%d', number, grouping=True)
     return formatted_number
+
+  def format_decimal(self, number):
+    return locale.format_string('%.*f', (2, number), grouping=True)

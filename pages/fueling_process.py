@@ -1,8 +1,10 @@
 from tkinter import *
 import tkinter as tk
 from tkinter import ttk
-
+import time
 from config.style import *
+from config.constant import *
+
 import locale
 from .layout.fueling_process_template import FuelingProcessTemplate
 from .component.button import RightButton, LeftButton
@@ -23,6 +25,7 @@ class FuelingProcess(tk.Frame):
     }
     
     self.progress_var = tk.IntVar()
+    self.progress_var.initialize(0)
     
     layout = FuelingProcessTemplate(root=self)
     
@@ -82,24 +85,36 @@ class FuelingProcess(tk.Frame):
     )
     self.amount.grid()
     
-    self.update_progress()
+    self.after(1000, self.update_progress)
     
   def format_money(self, number):
-    locale.setlocale(locale.LC_ALL, 'id_ID.UTF-8')
     formatted_number = locale.format_string('%d', number, grouping=True)
     return formatted_number
   
+  def format_decimal(self, number):
+    return locale.format_string('%.*f', (2, number), grouping=True)
+  
   def update_progress(self):
+    current_time = time.time()
     progress_value = self.progress_var.get()
+    amount = float(self.state['amount'])
+    expenses = float(self.state['expenses'])
+    
     if progress_value < 100:
-      current_value = float(progress_value + 10)
+      
+      delta_percentage = ((PUMP_DISCHARGE_SPEED) / amount) * 100
+      
+      current_value = progress_value + delta_percentage
+      if (current_value > 100): current_value = 100
+      
       self.progress_var.set(current_value)
-      
-      current_price = self.format_money(float('{:.3f}'.format(current_value/100 * float(self.state['expenses']))))
+    
+      current_price = self.format_money(current_value / 100 * expenses)
       self.price.config(text=f"Rp{current_price} / Rp{self.format_money(self.state['expenses'])}")
-      
-      current_amount = '{:.3f}'.format(current_value/100 * float(self.state['amount']))
-      self.amount.config(text=f"{current_amount}L / {self.state['amount']}L")
-      self.after(300, self.update_progress) 
+    
+      current_amount = current_value / 100 * amount
+      self.amount.config(text=f"{self.format_decimal(current_amount)}L / {self.format_decimal(amount)}L")
+      print(f"Calculation Time: {time.time() - current_time}")
+      self.after(1000, self.update_progress)
     else:
       self.title.config(text="SELESAI")
