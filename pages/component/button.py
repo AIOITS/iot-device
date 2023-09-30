@@ -30,7 +30,8 @@ class LeftButton:
             width=4,
             relief="flat",
             command=onClick
-        ).grid(row=0, column=0, rowspan=len(components), sticky='w', padx=(0, 16))
+        ).grid(row=0, column=0, rowspan=len(components), sticky='w', padx=(0, 16))        
+            
 
 class RightButton:
     def __init__(self, container, components, onClick=None):

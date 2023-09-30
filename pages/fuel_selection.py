@@ -1,6 +1,7 @@
 from tkinter import *
 import tkinter as tk
 from config.style import *
+from config.constant import *
 import locale
 from .layout.master import LayoutMaster
 from .component.button import RightButton, LeftButton
@@ -18,7 +19,7 @@ class FuelSelection(tk.Frame):
       "bbm": self.get_bbm_based_on_category(controller.get_cache("bbm"), data["choosen_vehicle"]['bahan_bakar'])
     }
     
-    layout = LayoutMaster(root=self)
+    layout = LayoutMaster(root=self, controller=controller)
     
     LeftLabel(
       container=layout.title,
@@ -39,7 +40,7 @@ class FuelSelection(tk.Frame):
           font = FONT_HEADING_2_BOLD,
         )
       ],
-      onClick=lambda: controller.previous_page(self)
+      onClick=lambda: controller.show_page(ps.welcome.Welcome)
     )
     
     self.bbm_handler(layout, controller)

@@ -14,7 +14,6 @@ class FuelingProcess(tk.Frame):
   def __init__(self, parent, controller, data):
     tk.Frame.__init__(self, parent)
     self.grid(row = 0, column = 0)
-    print(data)
     self.state = {
       "vehicle_index": 0,
       "user_data": controller.get_cache("user-data"),
@@ -27,7 +26,7 @@ class FuelingProcess(tk.Frame):
     self.progress_var = tk.IntVar()
     self.progress_var.initialize(0)
     
-    layout = FuelingProcessTemplate(root=self)
+    layout = FuelingProcessTemplate(root=self, controller=controller)
     
     self.title = Label(
       layout.title,
@@ -95,7 +94,6 @@ class FuelingProcess(tk.Frame):
     return locale.format_string('%.*f', (2, number), grouping=True)
   
   def update_progress(self):
-    current_time = time.time()
     progress_value = self.progress_var.get()
     amount = float(self.state['amount'])
     expenses = float(self.state['expenses'])
@@ -114,7 +112,6 @@ class FuelingProcess(tk.Frame):
     
       current_amount = current_value / 100 * amount
       self.amount.config(text=f"{self.format_decimal(current_amount)}L / {self.format_decimal(amount)}L")
-      print(f"Calculation Time: {time.time() - current_time}")
       self.after(1000, self.update_progress)
     else:
       self.title.config(text="SELESAI")

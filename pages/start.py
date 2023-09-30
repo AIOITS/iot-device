@@ -2,6 +2,7 @@
 from tkinter import *
 import tkinter as tk
 from config.style import *
+from config.constant import *
 import pages.init as ps
 
 class Start(tk.Frame):
@@ -61,3 +62,5 @@ class Start(tk.Frame):
       text ="Page 2",
       command = lambda : controller.show_page(ps.welcome.Welcome)
     ).place(relx = 0.5, rely = 0.6, anchor = 'center')
+    
+    controller.onPressed(PIN_BUTTON_LEFT_TOP, lambda pin: controller.show_page(ps.welcome.Welcome))

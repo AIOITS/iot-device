@@ -5,7 +5,8 @@ import locale
 from .layout.fuel_input_template import FuelInputTemplate
 from .component.button import RightButton, LeftButton
 from .component.label import CustomLabel, LeftLabel, CenterLabel
-from .confirmation import Confirmation
+import pages.init as ps
+
 class FuelInput(tk.Frame):
   def __init__(self, parent, controller, data):
     tk.Frame.__init__(self, parent)
@@ -17,7 +18,7 @@ class FuelInput(tk.Frame):
       "choosen_bbm": data["choosen_bbm"],
     }
     
-    layout = FuelInputTemplate(root=self)
+    layout = FuelInputTemplate(root=self, controller=controller)
     
     CenterLabel(
       container=layout.title,
@@ -62,7 +63,9 @@ class FuelInput(tk.Frame):
           font = FONT_HEADING_2_BOLD,
         ),
       ],
-      onClick=lambda: controller.previous_page(self)
+      onClick=lambda: controller.show_page(ps.fuel_selection.FuelSelection, {
+        "choosen_vehicle": self.state["choosen_vehicle"],
+      })
     )
     
     RightButton(
@@ -73,7 +76,7 @@ class FuelInput(tk.Frame):
           font = FONT_HEADING_2_BOLD,
         )
       ],
-      onClick=lambda: controller.show_page(Confirmation, {
+      onClick=lambda: controller.show_page(ps.confirmation.Confirmation, {
         "choosen_vehicle": self.state["choosen_vehicle"],
         "choosen_bbm": self.state["choosen_bbm"],
         "expenses": self.get_numeric_value(self.entry.get()),

@@ -1,6 +1,7 @@
 from tkinter import *
 import tkinter as tk
 from config.style import *
+from config.constant import *
 import locale
 from .layout.master import LayoutMaster
 from .component.button import RightButton
@@ -10,13 +11,14 @@ import pages.init as ps
 class Welcome(tk.Frame):
   def __init__(self, parent, controller, data):
     tk.Frame.__init__(self, parent)
+
     self.grid(row = 0, column = 0)
     self.state = {
       "vehicle_index": 0,
       "user_data": controller.get_cache("user-data")
     }
     
-    layout = LayoutMaster(root=self)
+    layout = LayoutMaster(root=self, controller=controller)
     
     LeftLabel(
       container=layout.title,
@@ -78,7 +80,8 @@ class Welcome(tk.Frame):
   
   def vehicle_handler(self, layout, controller):
     for widget in layout.right_top.winfo_children(): widget.destroy()
-    for widget in layout.right_middle.winfo_children(): widget.destroy()    
+    for widget in layout.right_middle.winfo_children(): widget.destroy() 
+    
     for i in range(self.state['vehicle_index'], self.state['vehicle_index']+2):
       if (i < len(self.state['user_data']['ktp']['stnk'])):
         RightButton(

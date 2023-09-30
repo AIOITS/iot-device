@@ -5,12 +5,12 @@ import locale
 from .layout.confirmation_template import ConfirmationTemplate
 from .component.button import RightButton, LeftButton
 from .component.label import CustomLabel, LeftLabel, CenterLabel
-from.fueling_process import FuelingProcess
+import pages.init as ps
+
 class Confirmation(tk.Frame):
   def __init__(self, parent, controller, data):
     tk.Frame.__init__(self, parent)
     self.grid(row = 0, column = 0)
-    print(data)
     self.state = {
       "vehicle_index": 0,
       "user_data": controller.get_cache("user-data"),
@@ -19,7 +19,7 @@ class Confirmation(tk.Frame):
       "expenses": data["expenses"],
     }
     
-    layout = ConfirmationTemplate(root=self)
+    layout = ConfirmationTemplate(root=self, controller=controller)
     
     CenterLabel(
       container=layout.title,
@@ -155,7 +155,7 @@ class Confirmation(tk.Frame):
           font = FONT_HEADING_2_BOLD,
         )
       ],
-      onClick=lambda: controller.show_page(FuelingProcess, {
+      onClick=lambda: controller.show_page(ps.fueling_process.FuelingProcess, {
         "choosen_vehicle": self.state["choosen_vehicle"],
         "choosen_bbm": self.state["choosen_bbm"],
         "expenses": self.state["expenses"],
@@ -171,7 +171,10 @@ class Confirmation(tk.Frame):
           font = FONT_HEADING_2_BOLD,
         )
       ],
-      onClick=lambda: controller.previous_page(self)
+      onClick=lambda: controller.show_page(ps.fuel_input.FuelInput, {
+        "choosen_vehicle": self.state["choosen_vehicle"],
+        "choosen_bbm": self.state["choosen_bbm"],
+      })
     )
   
   def format_money(self, number):

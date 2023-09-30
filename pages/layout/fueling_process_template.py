@@ -1,8 +1,9 @@
 import tkinter as tk
 from config.style import *
+from config.constant import *
 
 class FuelingProcessTemplate:
-    def __init__(self, root):
+    def __init__(self, root, controller):
         self.title = tk.Frame(root)
         self.title.place(relx=0.5, rely=0.10, anchor='n')
         self.title.configure(bg=COLOR_BLUE)
@@ -30,3 +31,6 @@ class FuelingProcessTemplate:
         self.remaining_balance = tk.Frame(root)
         self.remaining_balance.place(relx=0, rely=0.95, anchor='sw')
         self.remaining_balance.configure(bg=COLOR_BLUE)
+        
+        controller.clear_onPressed()
+        

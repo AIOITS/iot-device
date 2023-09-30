@@ -1,8 +1,9 @@
 import tkinter as tk
 from config.style import *
+from config.constant import *
 
 class FuelInputTemplate:
-    def __init__(self, root):
+    def __init__(self, root, controller):
         self.title = tk.Frame(root)
         self.title.place(relx=0.5, rely=0.15, anchor='n')
         self.title.configure(bg=COLOR_BLUE)
@@ -26,3 +27,8 @@ class FuelInputTemplate:
         self.right_bottom = tk.Frame(root)
         self.right_bottom.place(relx=1, rely=0.85, anchor='e')
         self.right_bottom.configure(bg=COLOR_BLUE)
+        
+        controller.clear_onPressed()
+        
+        controller.onPressed(PIN_BUTTON_LEFT_BOTTOM, lambda pin: self.left_bottom.winfo_children()[0].winfo_children()[-1].invoke())
+        controller.onPressed(PIN_BUTTON_RIGHT_BOTTOM, lambda pin: self.right_bottom.winfo_children()[0].winfo_children()[-1].invoke())

@@ -1,10 +1,11 @@
 from tkinter import *
 import tkinter as tk
 from config.style import *
+from config.constant import *
 import pages.init as ps
 from helper.api import api
 from helper.cache import Cache
-import time
+import RPi.GPIO as GPIO
 import locale
 
 pages = (
@@ -17,6 +18,15 @@ class MainApplication(Tk):
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs)
     locale.setlocale(locale.LC_ALL, 'id_ID.UTF-8')
+    
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(PIN_BUTTON_LEFT_TOP, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+    GPIO.setup(PIN_BUTTON_LEFT_MIDDLE, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+    GPIO.setup(PIN_BUTTON_LEFT_BOTTOM, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+    GPIO.setup(PIN_BUTTON_RIGHT_TOP, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+    GPIO.setup(PIN_BUTTON_RIGHT_MIDDLE, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+    GPIO.setup(PIN_BUTTON_RIGHT_BOTTOM, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+    
     self.title("My GUI App")
 
     self.container = tk.Frame(self)
@@ -52,7 +62,23 @@ class MainApplication(Tk):
     
   def get_cache(self, cache_name):
     return Cache.get_cache(cache_name)
-
+  
+  def onPressed(self, pin, function):
+    GPIO.remove_event_detect(pin)
+    GPIO.add_event_detect(pin, GPIO.RISING, callback=function, bouncetime=500)
+  
+  def remove_onPressed(self, pin):
+    GPIO.remove_event_detect(pin)
+    
+  def clear_onPressed(self):
+    
+    self.onPressed(PIN_BUTTON_LEFT_TOP, lambda pin: None)
+    self.onPressed(PIN_BUTTON_LEFT_MIDDLE, lambda pin: None)
+    self.onPressed(PIN_BUTTON_LEFT_BOTTOM, lambda pin: None)
+    self.onPressed(PIN_BUTTON_RIGHT_TOP, lambda pin: None)
+    self.onPressed(PIN_BUTTON_RIGHT_MIDDLE, lambda pin: None)
+    self.onPressed(PIN_BUTTON_RIGHT_BOTTOM, lambda pin: None)
+    
 if __name__ == "__main__":
     app = MainApplication()
     app.configure(bg=COLOR_BLUE)

@@ -23,7 +23,7 @@ class api():
         "query": query
       }
       ).json()
-    print(f'GET {response}')
+    # print(f'GET {response}')
     return response
   
   @staticmethod
@@ -43,7 +43,7 @@ class api():
         "query": query
       }
       ).json()
-    print(f'GET {response}')
+    # print(f'GET {response}')
     return response
   
   def post(endpoint, body):
