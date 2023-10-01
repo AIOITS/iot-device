@@ -15,7 +15,7 @@ class Welcome(tk.Frame):
     self.grid(row = 0, column = 0)
     self.state = {
       "vehicle_index": 0,
-      "user_data": controller.get_cache("user-data")
+      "user_data": controller.get_cache("user-data"),
     }
     
     layout = LayoutMaster(root=self, controller=controller)

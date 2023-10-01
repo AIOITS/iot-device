@@ -148,22 +148,6 @@ class Confirmation(tk.Frame):
     )
     
     RightButton(
-      container=layout.instruction,
-      components=[
-        CustomLabel(
-          text ="SELANJUTNYA",
-          font = FONT_HEADING_2_BOLD,
-        )
-      ],
-      onClick=lambda: controller.show_page(ps.fueling_process.FuelingProcess, {
-        "choosen_vehicle": self.state["choosen_vehicle"],
-        "choosen_bbm": self.state["choosen_bbm"],
-        "expenses": self.state["expenses"],
-        "amount": '{:.3f}'.format(self.state['expenses']/self.state['choosen_bbm']['price_per_liter']),
-      })
-    )
-    
-    RightButton(
       container=layout.right_bottom,
       components=[
         CustomLabel(
@@ -176,6 +160,13 @@ class Confirmation(tk.Frame):
         "choosen_bbm": self.state["choosen_bbm"],
       })
     )
+    
+    self.after(1000, lambda: controller.nfc_listener.listen(lambda uid: controller.show_page(ps.fueling_process.FuelingProcess, {
+      "choosen_vehicle": self.state["choosen_vehicle"],
+      "choosen_bbm": self.state["choosen_bbm"],
+      "expenses": self.state["expenses"],
+      "amount": '{:.3f}'.format(self.state['expenses']/self.state['choosen_bbm']['price_per_liter']),
+    })))
   
   def format_money(self, number):
     locale.setlocale(locale.LC_ALL, 'id_ID.UTF-8')

@@ -63,4 +63,4 @@ class Start(tk.Frame):
       command = lambda : controller.show_page(ps.welcome.Welcome)
     ).place(relx = 0.5, rely = 0.6, anchor = 'center')
     
-    controller.onPressed(PIN_BUTTON_LEFT_TOP, lambda pin: controller.show_page(ps.welcome.Welcome))
+    self.after(1000, lambda: controller.nfc_listener.listen(lambda uid: controller.show_page(ps.welcome.Welcome, {"uid": uid})))
