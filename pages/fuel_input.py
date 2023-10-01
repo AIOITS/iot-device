@@ -100,6 +100,7 @@ class FuelInput(tk.Frame):
 
     try:
         numeric_value = int(numeric_value)
+        if (numeric_value > self.state['user_data']['saldo']) : numeric_value = 0
     except ValueError:
         numeric_value = 0
 

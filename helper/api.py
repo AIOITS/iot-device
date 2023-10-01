@@ -5,14 +5,25 @@ class api():
   # base_url = 'http://localhost:8080'
   
   @staticmethod
-  def get_user_data(data):
+  def get_user_data(uid, data):
+    query = '''
+    sim (where: {uid: {equals: "%s"}}) {
+      ktp{
+        user{
+          id
+        }
+      }
+    }
+    ''' % uid
+    user_id = api.get(query)["data"]["sim"][0]["ktp"]["user"]["id"]
+    
     query = '''
       query{
-        user(where: {id: {equals: 1}}){
+        user(where: {id: {equals: %d}}){
           %s
         }
       }
-    ''' % (data)
+    ''' % (int(user_id), data)
 
     response =  requests.post(
       url= f"{api.base_url}/graphql",

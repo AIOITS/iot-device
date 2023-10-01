@@ -4,6 +4,7 @@ from tkinter import ttk
 import time
 from config.style import *
 from config.constant import *
+import pages.init as ps
 
 import locale
 from .layout.fueling_process_template import FuelingProcessTemplate
@@ -84,7 +85,7 @@ class FuelingProcess(tk.Frame):
     )
     self.amount.grid()
     
-    self.after(1000, self.update_progress)
+    self.after(1000, lambda: self.update_progress(controller))
     
   def format_money(self, number):
     formatted_number = locale.format_string('%d', number, grouping=True)
@@ -93,7 +94,7 @@ class FuelingProcess(tk.Frame):
   def format_decimal(self, number):
     return locale.format_string('%.*f', (2, number), grouping=True)
   
-  def update_progress(self):
+  def update_progress(self, controller):
     progress_value = self.progress_var.get()
     amount = float(self.state['amount'])
     expenses = float(self.state['expenses'])
@@ -112,6 +113,14 @@ class FuelingProcess(tk.Frame):
     
       current_amount = current_value / 100 * amount
       self.amount.config(text=f"{self.format_decimal(current_amount)}L / {self.format_decimal(amount)}L")
-      self.after(1000, self.update_progress)
+      self.after(1000, lambda: self.update_progress(controller))
     else:
       self.title.config(text="SELESAI")
+      self.after(1000, lambda: self.redirect_page(controller, 5))
+      
+  def redirect_page(self, controller, counter):
+    if counter > 0:
+      self.title.config(text=f"SELESAI ({counter})")
+      self.after(1000, lambda: self.redirect_page(controller, counter-1))
+    else:
+      controller.show_page(ps.start.Start)

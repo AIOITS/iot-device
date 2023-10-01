@@ -9,24 +9,6 @@ class Start(tk.Frame):
   def __init__(self, parent, controller, data):
     tk.Frame.__init__(self, parent)
     
-    user_data = controller.get_user_data(
-      data='''
-        name,
-          saldo,
-          kuota_subsidi
-          ktp{
-            stnk{
-              nomor_stnk
-              nomor_polisi
-              merk
-              model
-              bahan_bakar
-            }
-          }
-        '''
-    )
-    controller.set_cache("user-data", user_data["data"]["user"][0])
-    
     bbm = controller.get_data(
       query='''
         bbm {
@@ -67,4 +49,26 @@ class Start(tk.Frame):
     #   command = lambda : controller.show_page(ps.welcome.Welcome)
     # ).place(relx = 0.5, rely = 0.6, anchor = 'center')
     
-    self.after(1000, lambda: controller.nfc_listener.listen(lambda uid: controller.show_page(ps.welcome.Welcome, {"uid": uid})))
+    self.after(1000, lambda: controller.nfc_listener.listen(lambda uid: self.retrieve_user_data(controller, uid)))
+    
+  def retrieve_user_data(self, controller, uid):
+    user_data = controller.get_user_data(
+      uid=uid,
+      data='''
+        name,
+          saldo,
+          kuota_subsidi
+          ktp{
+            stnk{
+              nomor_stnk
+              nomor_polisi
+              merk
+              model
+              bahan_bakar
+            }
+          }
+        '''
+    )
+    controller.set_cache("user-data", user_data["data"]["user"][0])
+    controller.set_cache("user-uid", uid)
+    controller.show_page(ps.welcome.Welcome, {"uid": uid})

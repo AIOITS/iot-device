@@ -162,18 +162,13 @@ class Confirmation(tk.Frame):
           font = FONT_HEADING_4_BOLD,
         )
       ],
-      onClick=lambda: controller.show_page(ps.fuel_input.FuelInput, {
-        "choosen_vehicle": self.state["choosen_vehicle"],
-        "choosen_bbm": self.state["choosen_bbm"],
-      })
-    )
-    
-    self.after(1000, lambda: controller.nfc_listener.listen(lambda uid: controller.show_page(ps.fueling_process.FuelingProcess, {
+      onClick=lambda: self.change_page(controller, ps.fuel_input.FuelInput, {
       "choosen_vehicle": self.state["choosen_vehicle"],
       "choosen_bbm": self.state["choosen_bbm"],
-      "expenses": self.state["expenses"],
-      "amount": '{:.3f}'.format(self.state['expenses']/self.state['choosen_bbm']['price_per_liter']),
-    })))
+    })
+    )
+    
+    self.after(1000, lambda: controller.nfc_listener.listen(lambda uid: self.verify_uid(controller, uid)))
   
   def format_money(self, number):
     locale.setlocale(locale.LC_ALL, 'id_ID.UTF-8')
@@ -182,3 +177,18 @@ class Confirmation(tk.Frame):
 
   def format_decimal(self, number):
     return locale.format_string('%.*f', (2, number), grouping=True)
+  
+  def change_page(self, controller, page, data=None):
+    controller.nfc_listener.stop_listen()
+    controller.show_page(page, data)
+    
+  def verify_uid(self, controller, uid):
+    user_uid = controller.get_cache("user-uid")
+    if (user_uid != uid): return controller.show_page(ps.start.Start)
+    
+    controller.show_page(ps.fueling_process.FuelingProcess, {
+      "choosen_vehicle": self.state["choosen_vehicle"],
+      "choosen_bbm": self.state["choosen_bbm"],
+      "expenses": self.state["expenses"],
+      "amount": '{:.3f}'.format(self.state['expenses']/self.state['choosen_bbm']['price_per_liter']),
+    })

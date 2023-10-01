@@ -20,8 +20,8 @@ class MainApplication(Tk):
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs)
     locale.setlocale(locale.LC_ALL, 'id_ID.UTF-8')
-    # KeypadListener()
     
+    self.keypad_listener = KeypadListener()
     self.nfc_listener = NfcListener()
     
     GPIO.setmode(GPIO.BCM)
@@ -51,8 +51,8 @@ class MainApplication(Tk):
   def previous_page(self, container):
     container.destroy()
   
-  def get_user_data(self, data):
-    return api.get_user_data(data)
+  def get_user_data(self, uid, data):
+    return api.get_user_data(uid,data)
   
   def get_data(self, query):
     return api.get(query)
@@ -68,7 +68,7 @@ class MainApplication(Tk):
   
   def onPressed(self, pin, function):
     GPIO.remove_event_detect(pin)
-    GPIO.add_event_detect(pin, GPIO.RISING, callback=function, bouncetime=1000)
+    GPIO.add_event_detect(pin, GPIO.RISING, callback=function, bouncetime=500)
   
   def remove_onPressed(self, pin):
     GPIO.remove_event_detect(pin)
@@ -89,3 +89,4 @@ if __name__ == "__main__":
     app.attributes("-fullscreen", True)
     app.wm_title("Welcome to AIOITS")
     app.mainloop()
+    GPIO.cleanup()

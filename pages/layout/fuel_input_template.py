@@ -30,5 +30,9 @@ class FuelInputTemplate:
         
         controller.clear_onPressed()
         
-        controller.onPressed(PIN_BUTTON_LEFT_BOTTOM, lambda pin: self.left_bottom.winfo_children()[0].winfo_children()[-1].invoke())
-        controller.onPressed(PIN_BUTTON_RIGHT_BOTTOM, lambda pin: self.right_bottom.winfo_children()[0].winfo_children()[-1].invoke())
+        controller.onPressed(PIN_BUTTON_LEFT_BOTTOM, lambda pin: self.invoke(self.left_bottom))
+        controller.onPressed(PIN_BUTTON_RIGHT_BOTTOM, lambda pin: self.invoke(self.right_bottom))
+        
+    def invoke(self, frame):
+        button = frame.winfo_children()[0].winfo_children()[-1]
+        if (button.winfo_class() == 'Button'): button.invoke()
