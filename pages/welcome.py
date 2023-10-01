@@ -58,7 +58,7 @@ class Welcome(tk.Frame):
           font = FONT_HEADING_4_REGULAR,
         ),
         CustomLabel(
-          text = f"{self.state['user_data']['kuota_subsidi']} Liter",
+          text = f"{self.format_decimal(self.state['user_data']['kuota_subsidi'])} Liter",
           font = FONT_HEADING_3_BOLD,
         ),
       ],
@@ -109,3 +109,6 @@ class Welcome(tk.Frame):
     locale.setlocale(locale.LC_ALL, 'id_ID.UTF-8')
     formatted_number = locale.format_string('%d', number, grouping=True)
     return formatted_number
+  
+  def format_decimal(self, number):
+    return locale.format_string('%.*f', (2, number), grouping=True)

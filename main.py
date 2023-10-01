@@ -10,11 +10,8 @@ from helper.nfc_listener import NfcListener
 import RPi.GPIO as GPIO
 import locale
 
-pages = (
-  ps.start.Start,
-  ps.welcome.Welcome,
-  ps.fuel_selection.FuelSelection
-)
+import netifaces as ni
+interface_name = 'eth0'
 
 class MainApplication(Tk):
   def __init__(self, *args, **kwargs):
@@ -23,6 +20,7 @@ class MainApplication(Tk):
     
     self.keypad_listener = KeypadListener()
     self.nfc_listener = NfcListener()
+    self.mac_address = ni.ifaddresses(interface_name)[ni.AF_LINK][0]['addr']
     
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(PIN_BUTTON_LEFT_TOP, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
@@ -57,8 +55,8 @@ class MainApplication(Tk):
   def get_data(self, query):
     return api.get(query)
   
-  def post_data(self, endpoint, body):
-    return api.post(endpoint, body)
+  def post_data(self, endpoint, body, headers={}):
+    return api.post(endpoint, body, headers)
   
   def set_cache(self, cache_name, data):
     Cache.save_cache(cache_name, data)

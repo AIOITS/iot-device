@@ -65,10 +65,18 @@ class Start(tk.Frame):
               merk
               model
               bahan_bakar
+              jenis
             }
           }
         '''
     )
+    
+    user_jwt = controller.post_data('/auth/login-from-device', {
+      "deviceId": controller.mac_address,
+      "uid": uid
+    })
+    
+    controller.set_cache("user-jwt", user_jwt["data"]["access_token"])
     controller.set_cache("user-data", user_data["data"]["user"][0])
     controller.set_cache("user-uid", uid)
     controller.show_page(ps.welcome.Welcome, {"uid": uid})

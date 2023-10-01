@@ -185,6 +185,23 @@ class Confirmation(tk.Frame):
   def verify_uid(self, controller, uid):
     user_uid = controller.get_cache("user-uid")
     if (user_uid != uid): return controller.show_page(ps.start.Start)
+    data = controller.post_data('/history-pengisian', {
+      "kategori_pengisian": "subsidi" if self.state['choosen_bbm']['is_subsidi'] else "non_subsidi",
+      "jenis_kendaraan": self.state['choosen_vehicle']['jenis'],
+      "jumlah": self.state['expenses']/self.state['choosen_bbm']['price_per_liter'],
+      "nomor_stnk": self.state['choosen_vehicle']['nomor_stnk'],
+      "bbm_id": int(self.state['choosen_bbm']['id']),
+      "device_id": controller.mac_address
+    }, {
+      "Authorization": f"Bearer {controller.get_cache('user-jwt')}"
+    })
+    
+    if (data['statusCode'] != 201):
+      return controller.show_page(ps.confirmation.Confirmation, {
+        "choosen_vehicle": self.state["choosen_vehicle"],
+        "choosen_bbm": self.state["choosen_bbm"],
+        "expenses": self.state["expenses"],
+      })
     
     controller.show_page(ps.fueling_process.FuelingProcess, {
       "choosen_vehicle": self.state["choosen_vehicle"],

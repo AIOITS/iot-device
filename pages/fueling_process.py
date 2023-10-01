@@ -46,7 +46,7 @@ class FuelingProcess(tk.Frame):
           font = FONT_HEADING_4_REGULAR,
         ),
         CustomLabel(
-          text = "Rp50.000",
+          text = f"Rp{self.format_money(self.state['user_data']['saldo'] - self.state['expenses'])}",
           font = FONT_HEADING_3_BOLD,
         )
       ],
