@@ -26,7 +26,7 @@ class FuelSelection(tk.Frame):
       components=[
         CustomLabel(
           text = "JENIS BBM",
-          font = FONT_HEADING_1_BOLD,
+          font = FONT_HEADING_3_BOLD,
         )
       ],
       padx=(PADDING_FROM_FRAME, 0),
@@ -37,7 +37,7 @@ class FuelSelection(tk.Frame):
       components=[
         CustomLabel(
           text ="KEMBALI",
-          font = FONT_HEADING_2_BOLD,
+          font = FONT_HEADING_4_BOLD,
         )
       ],
       onClick=lambda: controller.show_page(ps.welcome.Welcome)
@@ -56,19 +56,19 @@ class FuelSelection(tk.Frame):
         components=[
           CustomLabel(
             text = f"{self.state['bbm'][i]['name']} (subsidi)",
-            font = FONT_HEADING_2_BOLD,
+            font = FONT_HEADING_4_BOLD,
           ) if self.state['bbm'][i]['is_subsidi']
           else CustomLabel(
             text = f"{self.state['bbm'][i]['name']}",
-            font = FONT_HEADING_2_BOLD,
+            font = FONT_HEADING_4_BOLD,
           ),
           CustomLabel(
             text = self.state['bbm'][i]['type'],
-            font = FONT_HEADING_3_REGULAR,
+            font = FONT_HEADING_5_REGULAR,
           ),
           CustomLabel(
             text = f"Rp{self.format_money(self.state['bbm'][i]['price_per_liter'])}/Liter",
-            font = FONT_HEADING_3_REGULAR,
+            font = FONT_HEADING_5_REGULAR,
           ),
         ],
       )

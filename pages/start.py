@@ -41,26 +41,30 @@ class Start(tk.Frame):
     )
     controller.set_cache("bbm", bbm['data']['bbm'])
     
-    Label(
-      self,
-      text ="SILAHKAN",
-      font = FONT_BODY_REGULAR,
-      fg=COLOR_WHITE,
-      bg=COLOR_BLUE
-    ).place(relx = 0.5, rely = 0.4, anchor = 'center')
+    content = tk.Frame(self)
+    content.place(relx=0.5, rely=0.5, anchor='center')
+    content.configure(bg=COLOR_BLUE)
     
     Label(
-      self,
+      content,
+      text ="SILAHKAN",
+      font = FONT_HEADING_3_REGULAR,
+      fg=COLOR_WHITE,
+      bg=COLOR_BLUE
+    ).grid(row=0)
+    
+    Label(
+      content,
       text ="TAP KARTU",
       font = FONT_DISPLAY_1_BOLD,
       fg=COLOR_WHITE,
       bg=COLOR_BLUE
-    ).place(relx = 0.5, rely = 0.5, anchor = 'center')
+    ).grid(row=1)
     
-    Button(
-      self,
-      text ="Page 2",
-      command = lambda : controller.show_page(ps.welcome.Welcome)
-    ).place(relx = 0.5, rely = 0.6, anchor = 'center')
+    # Button(
+    #   self,
+    #   text ="Page 2",
+    #   command = lambda : controller.show_page(ps.welcome.Welcome)
+    # ).place(relx = 0.5, rely = 0.6, anchor = 'center')
     
     self.after(1000, lambda: controller.nfc_listener.listen(lambda uid: controller.show_page(ps.welcome.Welcome, {"uid": uid})))

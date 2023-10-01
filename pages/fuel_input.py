@@ -25,7 +25,7 @@ class FuelInput(tk.Frame):
       components=[
         CustomLabel(
           text = "JUMLAH LITER PENGISIAN",
-          font = FONT_HEADING_1_BOLD,
+          font = FONT_HEADING_3_BOLD,
         )
       ],
       padx=(PADDING_FROM_FRAME, 0),
@@ -36,7 +36,7 @@ class FuelInput(tk.Frame):
       fg=COLOR_WHITE,
       bg=COLOR_BLUE,
       bd=0,
-      font=FONT_HEADING_1_BOLD,
+      font=FONT_HEADING_2_BOLD,
       text="Rp",
       relief='flat',
     ).grid(row=0, column=0, sticky="ew", padx=(0, 16))
@@ -46,8 +46,11 @@ class FuelInput(tk.Frame):
       fg=COLOR_WHITE,
       bg=COLOR_BLUE,
       width=10,
-      font=FONT_HEADING_1_BOLD,
-      relief='flat',
+      bd=0,
+      highlightbackground=COLOR_BLUE,
+      highlightcolor=COLOR_BLUE,
+      font=FONT_HEADING_2_BOLD,
+      relief='solid',
       justify='center',
     )
     self.entry.focus_set()
@@ -60,7 +63,7 @@ class FuelInput(tk.Frame):
       components=[
         CustomLabel(
           text ="KEMBALI",
-          font = FONT_HEADING_2_BOLD,
+          font = FONT_HEADING_4_BOLD,
         ),
       ],
       onClick=lambda: controller.show_page(ps.fuel_selection.FuelSelection, {
@@ -73,7 +76,7 @@ class FuelInput(tk.Frame):
       components=[
         CustomLabel(
           text ="SELANJUTNYA",
-          font = FONT_HEADING_2_BOLD,
+          font = FONT_HEADING_4_BOLD,
         )
       ],
       onClick=lambda: controller.show_page(ps.confirmation.Confirmation, {

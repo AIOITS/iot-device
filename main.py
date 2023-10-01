@@ -20,7 +20,7 @@ class MainApplication(Tk):
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs)
     locale.setlocale(locale.LC_ALL, 'id_ID.UTF-8')
-    KeypadListener()
+    # KeypadListener()
     
     self.nfc_listener = NfcListener()
     

@@ -9,7 +9,7 @@ class FuelInputTemplate:
         self.title.configure(bg=COLOR_BLUE)
         
         group = tk.Frame(root)
-        group.place(relx=0.5, rely=0.5, anchor='n')
+        group.place(relx=0.5, rely=0.45, anchor='n')
         group.configure(bg=COLOR_BLUE)
         
         self.price_label = tk.Frame(group)

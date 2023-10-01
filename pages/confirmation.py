@@ -26,10 +26,11 @@ class Confirmation(tk.Frame):
       components=[
         CustomLabel(
           text = "KONFIRMASI",
-          font = FONT_HEADING_1_BOLD,
+          font = FONT_HEADING_3_BOLD,
         )
       ],
       padx=(PADDING_FROM_FRAME, 0),
+      pady=(16, 0),
     )
     
     LeftLabel(
@@ -37,19 +38,20 @@ class Confirmation(tk.Frame):
       row=0,
       label= CustomLabel(
             text = "Kendaraan",
-            font = FONT_HEADING_3_REGULAR,
+            font = FONT_HEADING_5_REGULAR,
           ),
       components=[
         CustomLabel(
           text = f"{self.state['choosen_vehicle']['merk']} {self.state['choosen_vehicle']['model']}",
-          font = FONT_HEADING_2_BOLD,
+          font = FONT_HEADING_4_BOLD,
         ),
         CustomLabel(
           text = self.state['choosen_vehicle']['nomor_polisi'],
-          font = FONT_HEADING_3_REGULAR,
+          font = FONT_HEADING_5_REGULAR,
         )
       ],
       padx=(PADDING_FROM_FRAME, 0),
+      pady=(16, 0),
     ),
     
     LeftLabel(
@@ -57,19 +59,20 @@ class Confirmation(tk.Frame):
       row=1,
       label= CustomLabel(
             text = "Jenis BBM",
-            font = FONT_HEADING_3_REGULAR,
+            font = FONT_HEADING_5_REGULAR,
           ),
       components=[
         CustomLabel(
             text = f"{self.state['choosen_bbm']['name']} (subsidi)",
-            font = FONT_HEADING_2_BOLD,
+            font = FONT_HEADING_4_BOLD,
           ) if self.state['choosen_bbm']['is_subsidi']
           else CustomLabel(
             text = f"{self.state['choosen_bbm']['name']}",
-            font = FONT_HEADING_2_BOLD,
+            font = FONT_HEADING_4_BOLD,
           ),
       ],
       padx=(PADDING_FROM_FRAME, 0),
+      pady=(16, 0),
     )
     
     LeftLabel(
@@ -77,15 +80,16 @@ class Confirmation(tk.Frame):
       row=2,
       label= CustomLabel(
             text = "Skema",
-            font = FONT_HEADING_3_REGULAR,
+            font = FONT_HEADING_5_REGULAR,
           ),
       components=[
         CustomLabel(
             text = "Subsidi" if self.state['choosen_bbm']['is_subsidi'] else "Non Subsidi",
-            font = FONT_HEADING_2_BOLD,
+            font = FONT_HEADING_4_BOLD,
           )
       ],
       padx=(PADDING_FROM_FRAME, 0),
+      pady=(16, 0),
     ),
     
     LeftLabel(
@@ -93,15 +97,16 @@ class Confirmation(tk.Frame):
       row=3,
       label= CustomLabel(
             text = "Harga/Liter",
-            font = FONT_HEADING_3_REGULAR,
+            font = FONT_HEADING_5_REGULAR,
           ),
       components=[
         CustomLabel(
             text = f"Rp{self.format_money(self.state['choosen_bbm']['price_per_liter'])}/Liter",
-            font = FONT_HEADING_2_BOLD,
+            font = FONT_HEADING_4_BOLD,
           )
       ],
       padx=(PADDING_FROM_FRAME, 0),
+      pady=(16, 0),
     ),
     
     LeftLabel(
@@ -109,15 +114,16 @@ class Confirmation(tk.Frame):
       row=5,
       label= CustomLabel(
             text = "Jumlah",
-            font = FONT_HEADING_3_REGULAR,
+            font = FONT_HEADING_5_REGULAR,
           ),
       components=[
         CustomLabel(
             text = f"{self.format_decimal(self.state['expenses']/self.state['choosen_bbm']['price_per_liter'])} Liter",
-            font = FONT_HEADING_2_BOLD,
+            font = FONT_HEADING_4_BOLD,
           )
       ],
       padx=(PADDING_FROM_FRAME, 0),
+      pady=(16, 0),
     ),
     
     LeftLabel(
@@ -125,15 +131,16 @@ class Confirmation(tk.Frame):
       row=6,
       label= CustomLabel(
             text = "Total",
-            font = FONT_HEADING_3_REGULAR,
+            font = FONT_HEADING_5_REGULAR,
           ),
       components=[
         CustomLabel(
             text = f"Rp{self.format_money(self.state['expenses'])}",
-            font = FONT_HEADING_2_BOLD,
+            font = FONT_HEADING_4_BOLD,
           )
       ],
       padx=(PADDING_FROM_FRAME, 0),
+      pady=(16, 0),
     ),
     
     CenterLabel(
@@ -142,7 +149,7 @@ class Confirmation(tk.Frame):
       components=[
         CustomLabel(
             text = "Tempel kartu untuk konfirmasi",
-            font = FONT_HEADING_3_REGULAR,
+            font = FONT_HEADING_5_REGULAR,
           )
       ],
     )
@@ -152,7 +159,7 @@ class Confirmation(tk.Frame):
       components=[
         CustomLabel(
           text ="KEMBALI",
-          font = FONT_HEADING_2_BOLD,
+          font = FONT_HEADING_4_BOLD,
         )
       ],
       onClick=lambda: controller.show_page(ps.fuel_input.FuelInput, {

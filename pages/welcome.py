@@ -25,11 +25,11 @@ class Welcome(tk.Frame):
       components=[
         CustomLabel(
           text ="Selamat Datang",
-          font = FONT_HEADING_2_REGULAR,
+          font = FONT_HEADING_4_REGULAR,
         ),
         CustomLabel(
           text =self.state['user_data']["name"],
-          font = FONT_HEADING_1_BOLD,
+          font = FONT_HEADING_3_BOLD,
         )
       ],
       padx=(PADDING_FROM_FRAME, 0),
@@ -40,11 +40,11 @@ class Welcome(tk.Frame):
       components=[
         CustomLabel(
           text ="Saldo",
-          font = FONT_HEADING_2_REGULAR,
+          font = FONT_HEADING_4_REGULAR,
         ),
         CustomLabel(
           text = f"Rp{Welcome.format_money(self.state['user_data']['saldo'])}",
-          font = FONT_HEADING_1_BOLD,
+          font = FONT_HEADING_3_BOLD,
         ),
       ],
       padx=(PADDING_FROM_FRAME, 0),
@@ -55,11 +55,11 @@ class Welcome(tk.Frame):
       components=[
         CustomLabel(
           text ="Sisa Subsidi",
-          font = FONT_HEADING_2_REGULAR,
+          font = FONT_HEADING_4_REGULAR,
         ),
         CustomLabel(
           text = f"{self.state['user_data']['kuota_subsidi']} Liter",
-          font = FONT_HEADING_1_BOLD,
+          font = FONT_HEADING_3_BOLD,
         ),
       ],
       padx=(PADDING_FROM_FRAME, 0),
@@ -72,7 +72,7 @@ class Welcome(tk.Frame):
       components=[
         CustomLabel(
           text ="Kendaraan Selanjutnya",
-          font = FONT_HEADING_3_BOLD,
+          font = FONT_HEADING_4_BOLD,
         )
       ],
       onClick=lambda: self.vehicle_handler(layout, controller)
@@ -90,11 +90,11 @@ class Welcome(tk.Frame):
           components=[
             CustomLabel(
               text = f"{self.state['user_data']['ktp']['stnk'][i]['merk']} {self.state['user_data']['ktp']['stnk'][i]['model']}",
-              font = FONT_HEADING_2_BOLD,
+              font = FONT_HEADING_4_BOLD,
             ),
             CustomLabel(
               text = self.state['user_data']['ktp']['stnk'][i]['nomor_polisi'],
-              font = FONT_HEADING_3_REGULAR,
+              font = FONT_HEADING_5_REGULAR,
             ),
           ],
         )

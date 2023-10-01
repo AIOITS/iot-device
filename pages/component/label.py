@@ -19,7 +19,7 @@ class LeftLabel:
     def __init__(self, container, components, row=0, label=None, **kwargs):
         frame = tk.Frame(container)
         frame.configure(bg=COLOR_BLUE)
-        frame.grid(row=row, sticky='w', pady=(24, 0), **kwargs)
+        frame.grid(row=row, sticky='w', **kwargs)
         
         if label:
             Label(

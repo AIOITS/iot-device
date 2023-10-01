@@ -31,7 +31,7 @@ class FuelingProcess(tk.Frame):
     self.title = Label(
       layout.title,
       text = "SEDANG MENGISI",
-      font = FONT_HEADING_1_BOLD,
+      font = FONT_HEADING_3_BOLD,
       fg=COLOR_WHITE,
       bg=COLOR_BLUE,
     )
@@ -42,11 +42,11 @@ class FuelingProcess(tk.Frame):
       components=[
         CustomLabel(
           text = "Sisa Saldo",
-          font = FONT_HEADING_2_REGULAR,
+          font = FONT_HEADING_4_REGULAR,
         ),
         CustomLabel(
           text = "Rp50.000",
-          font = FONT_HEADING_1_BOLD,
+          font = FONT_HEADING_3_BOLD,
         )
       ],
       padx=(PADDING_FROM_FRAME, 0),
@@ -63,13 +63,13 @@ class FuelingProcess(tk.Frame):
       lightcolor=COLOR_WHITE
     )
     
-    progress_bar = ttk.Progressbar(layout.progress_bar, orient="horizontal", mode="determinate", variable=self.progress_var, length=1200, maximum=100, style="Custom.Horizontal.TProgressbar")
+    progress_bar = ttk.Progressbar(layout.progress_bar, orient="horizontal", mode="determinate", variable=self.progress_var, length=800, maximum=100, style="Custom.Horizontal.TProgressbar")
     progress_bar.grid(row=0, column=1, ipady=24)
     
     self.price = Label(
       layout.price,
       text = f"Rp0 / Rp{self.format_money(self.state['expenses'])}",
-      font = FONT_HEADING_2_REGULAR,
+      font = FONT_HEADING_4_REGULAR,
       fg=COLOR_WHITE,
       bg=COLOR_BLUE,
     )
@@ -78,7 +78,7 @@ class FuelingProcess(tk.Frame):
     self.amount = Label(
       layout.amount,
       text = f"0,00 / {self.state['amount']}",
-      font = FONT_HEADING_2_REGULAR,
+      font = FONT_HEADING_4_REGULAR,
       fg=COLOR_WHITE,
       bg=COLOR_BLUE,
     )
