@@ -11,6 +11,7 @@ class Confirmation(tk.Frame):
   def __init__(self, parent, controller, data):
     tk.Frame.__init__(self, parent)
     self.grid(row = 0, column = 0)
+    self.controller = controller
     self.state = {
       "vehicle_index": 0,
       "user_data": controller.get_cache("user-data"),
@@ -168,8 +169,13 @@ class Confirmation(tk.Frame):
     })
     )
     
-    self.after(1000, lambda: controller.nfc_listener.listen(lambda uid: self.verify_uid(controller, uid)))
+    self.after(50, lambda: controller.nfc_listener.listen(self.onCardScanned))
   
+  def onCardScanned(self, uid):
+    print(f"LOGGER::CARD SCANNED {uid}")
+    self.controller.show_frame(ps.loading_page.LoadingPage)
+    self.after(50, lambda: self.verify_uid(self.controller, uid))
+    
   def format_money(self, number):
     locale.setlocale(locale.LC_ALL, 'id_ID.UTF-8')
     formatted_number = locale.format_string('%d', number, grouping=True)

@@ -43,3 +43,4 @@ class NfcListener():
     
     def stop_listen(self):
         self.listening = False
+        print(f"LOGGER::NFC Stop Listening")
