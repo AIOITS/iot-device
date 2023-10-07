@@ -57,7 +57,8 @@ class Start(tk.Frame):
   
   def onCardScanned(self, uid):
     print(f"LOGGER::CARD SCANNED {uid}")
-    self.retrieve_user_data(self.controller, uid)
+    self.controller.show_frame(ps.loading_page.LoadingPage)
+    self.after(50, lambda: self.retrieve_user_data(self.controller, uid))
   
   def retrieve_user_data(self, controller, uid):
     user_data = controller.get_user_data(

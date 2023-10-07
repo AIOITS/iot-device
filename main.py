@@ -13,6 +13,10 @@ import locale
 import netifaces as ni
 interface_name = 'eth0'
 
+manifest_page = (
+  ps.loading_page.LoadingPage,
+)
+
 class MainApplication(Tk):
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs)
@@ -38,12 +42,22 @@ class MainApplication(Tk):
     self.container.grid_columnconfigure(0, weight=1)
     self.container.configure(bg=COLOR_BLUE)
     
+    self.frames = {} 
+    
+    for F in manifest_page:
+      self.frames[F] = F(self.container, self, {})
+      self.frames[F].configure(bg=COLOR_BLUE)
+      self.frames[F].grid(row = 0, column = 0, sticky ="nsew")
     self.show_page(ps.start.Start)
 
   def show_page(self, container, data=None):
     frame = container(self.container, self, data)
     frame.configure(bg=COLOR_BLUE)
     frame.grid(row = 0, column = 0, sticky ="nsew")
+    frame.tkraise()
+    
+  def show_frame(self, frame):
+    frame = self.frames[frame]
     frame.tkraise()
   
   def previous_page(self, container):
