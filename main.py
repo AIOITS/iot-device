@@ -18,7 +18,7 @@ class MainApplication(Tk):
     super().__init__(*args, **kwargs)
     locale.setlocale(locale.LC_ALL, 'id_ID.UTF-8')
     
-    # self.keypad_listener = KeypadListener()
+    self.keypad_listener = KeypadListener()
     self.nfc_listener = NfcListener()
     self.mac_address = ni.ifaddresses(interface_name)[ni.AF_LINK][0]['addr']
     

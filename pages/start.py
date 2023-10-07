@@ -53,8 +53,12 @@ class Start(tk.Frame):
    
   def onListeningHandler(self):
     print("TESTING::MASUK")
-    self.controller.nfc_listener.listen(lambda uid: self.retrieve_user_data(self.controller, uid))
-    
+    self.controller.nfc_listener.listen(self.onCardScanned)
+  
+  def onCardScanned(self, uid):
+    print(f"LOGGER::CARD SCANNED {uid}")
+    self.retrieve_user_data(self.controller, uid)
+  
   def retrieve_user_data(self, controller, uid):
     user_data = controller.get_user_data(
       uid=uid,
