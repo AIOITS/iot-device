@@ -6,15 +6,15 @@ def test(pin):
   print(pin)
 
 # Define GPIO pins for the keypad
-L1 = 22
-L2 = 27
-L3 = 23
-L4 = 24
+C1 = 21
+C2 = 20
+C3 = 16
+C4 = 12
 
-C1 = 6
-C2 = 8
-C3 = 5
-C4 = 7
+L1 = 26
+L2 = 19
+L3 = 13
+L4 = 3
 
 GPIO.setmode(GPIO.BCM)
 

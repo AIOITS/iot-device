@@ -8,7 +8,7 @@ import pages.init as ps
 class Start(tk.Frame):
   def __init__(self, parent, controller, data):
     tk.Frame.__init__(self, parent)
-    
+    self.controller = controller
     bbm = controller.get_data(
       query='''
         bbm {
@@ -49,7 +49,11 @@ class Start(tk.Frame):
     #   command = lambda : controller.show_page(ps.welcome.Welcome)
     # ).place(relx = 0.5, rely = 0.6, anchor = 'center')
     
-    self.after(1000, lambda: controller.nfc_listener.listen(lambda uid: self.retrieve_user_data(controller, uid)))
+    self.after(500, self.onListeningHandler)
+   
+  def onListeningHandler(self):
+    print("TESTING::MASUK")
+    self.controller.nfc_listener.listen(lambda uid: self.retrieve_user_data(self.controller, uid))
     
   def retrieve_user_data(self, controller, uid):
     user_data = controller.get_user_data(

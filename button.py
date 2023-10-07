@@ -1,25 +1,25 @@
 #button
 import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(26, GPIO.IN, pull_up_down=GPIO.PUD_UP) #view pengguna, kanan atas
-GPIO.setup(19, GPIO.IN, pull_up_down=GPIO.PUD_UP) #kanan tengah
-GPIO.setup(13, GPIO.IN, pull_up_down=GPIO.PUD_UP) #kanan bawah
-GPIO.setup(12, GPIO.IN, pull_up_down=GPIO.PUD_UP) #kiri atas
-GPIO.setup(9, GPIO.IN, pull_up_down=GPIO.PUD_UP)  #kiri tengah
-GPIO.setup(11, GPIO.IN, pull_up_down=GPIO.PUD_UP) #kiri bawah
+GPIO.setup(18, GPIO.IN, pull_up_down=GPIO.PUD_DOWN) #view pengguna, kanan atas
+GPIO.setup(23, GPIO.IN, pull_up_down=GPIO.PUD_DOWN) #kanan tengah
+GPIO.setup(24, GPIO.IN, pull_up_down=GPIO.PUD_DOWN) #kanan bawah
+GPIO.setup(17, GPIO.IN, pull_up_down=GPIO.PUD_DOWN) #kiri atas
+GPIO.setup(27, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  #kiri tengah
+GPIO.setup(22, GPIO.IN, pull_up_down=GPIO.PUD_DOWN) #kiri bawah
 while True:
-    if GPIO.input(26)==GPIO.HIGH:
-        print("Button26 was pressed")
-    if GPIO.input(19)==GPIO.HIGH:
-        print("Button19 was pressed")
-    if GPIO.input(13)==GPIO.HIGH:
-        print("Button13 was pressed")
-    if GPIO.input(12)==GPIO.HIGH:
-        print("Button12 was pressed")
-    if GPIO.input(9)==GPIO.HIGH:
-        print("Button9 was pressed")
-    if GPIO.input(11)==GPIO.HIGH:
-        print("Button11 was pressed")
+    if GPIO.input(18)==GPIO.HIGH:
+        print("Button18 was pressed")
+    if GPIO.input(23)==GPIO.HIGH:
+        print("Button23 was pressed")
+    if GPIO.input(24)==GPIO.HIGH:
+        print("Button24 was pressed")
+    if GPIO.input(17)==GPIO.HIGH:
+        print("Button17 was pressed")
+    if GPIO.input(27)==GPIO.HIGH:
+        print("Button27 was pressed")
+    if GPIO.input(22)==GPIO.HIGH:
+        print("Button22 was pressed")
         
 #keypad
 import RPi.GPIO as GPIO

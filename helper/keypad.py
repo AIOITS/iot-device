@@ -4,15 +4,15 @@ import keyboard
 import threading
 
 # Define GPIO pins for the keypad
-L1 = 22
-L2 = 27
-L3 = 23
-L4 = 24
+L1 = 12
+L2 = 16
+L3 = 20
+L4 = 21
 
 C1 = 6
-C2 = 8
-C3 = 5
-C4 = 7
+C2 = 13
+C3 = 19
+C4 = 26
 
 class KeypadListener:
   def __init__(self):
