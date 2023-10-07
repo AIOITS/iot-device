@@ -50,6 +50,9 @@ class Start(tk.Frame):
     # ).place(relx = 0.5, rely = 0.6, anchor = 'center')
     
     self.after(500, self.onListeningHandler)
+  
+  def update(self):
+    pass
    
   def onListeningHandler(self):
     print("TESTING::MASUK")

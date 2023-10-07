@@ -169,7 +169,6 @@ class Confirmation(tk.Frame):
     self.after(50, lambda: controller.nfc_listener.listen(self.onCardScanned))
   
   def onBackButtonClicked(self):
-    self.controller.show_frame(ps.loading_page.LoadingPage)
     self.change_page(self.controller, ps.fuel_input.FuelInput, {
       "choosen_vehicle": self.state["choosen_vehicle"],
       "choosen_bbm": self.state["choosen_bbm"],
@@ -177,6 +176,7 @@ class Confirmation(tk.Frame):
   
   def onCardScanned(self, uid):
     print(f"LOGGER::CARD SCANNED {uid}")
+    self.controller.show_frame(ps.loading_page.LoadingPage)
     self.after(50, lambda: self.verify_uid(self.controller, uid))
     
   def format_money(self, number):

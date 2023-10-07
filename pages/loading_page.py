@@ -20,3 +20,6 @@ class LoadingPage(tk.Frame):
       bg=COLOR_BLUE,
     ).pack()
     
+  def update(self):
+    pass
+    

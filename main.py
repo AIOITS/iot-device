@@ -15,6 +15,7 @@ interface_name = 'eth0'
 
 manifest_page = (
   ps.loading_page.LoadingPage,
+  ps.start.Start
 )
 
 class MainApplication(Tk):
@@ -48,7 +49,7 @@ class MainApplication(Tk):
       self.frames[F] = F(self.container, self, {})
       self.frames[F].configure(bg=COLOR_BLUE)
       self.frames[F].grid(row = 0, column = 0, sticky ="nsew")
-    self.show_page(ps.start.Start)
+    self.show_frame(ps.start.Start)
 
   def show_page(self, container, data=None):
     frame = container(self.container, self, data)
@@ -56,9 +57,10 @@ class MainApplication(Tk):
     frame.grid(row = 0, column = 0, sticky ="nsew")
     frame.tkraise()
     
-  def show_frame(self, frame):
+  def show_frame(self, frame, data=None):
     frame = self.frames[frame]
     frame.tkraise()
+    frame.update()
   
   def previous_page(self, container):
     container.destroy()
