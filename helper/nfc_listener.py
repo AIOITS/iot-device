@@ -3,6 +3,7 @@ import binascii
 from pn532pi import Pn532, pn532
 from pn532pi import Pn532Hsu
 import time
+import threading
 
 PN532_HSU = Pn532Hsu(0)
 nfc = Pn532(PN532_HSU)
@@ -30,17 +31,22 @@ class NfcListener():
 
     def listen(self, callback):
         self.listening = True
-        id = None
+        self.nfc_thread = threading.Thread(target=self._listen_thread, args=(callback,))
+        self.nfc_thread.start()
+    
+    def _listen_thread(self, callback):
         while self.listening:
             time.sleep(0.3)
             success, id = self.scan_for_card()
             print(f"LOGGER::NFC Listening")
-            if success: break
-            if not self.listening: break
+            if success:
+                break
         if id:
             self.listening = False
             callback(id)
     
     def stop_listen(self):
         self.listening = False
-        print(f"LOGGER::NFC Stop Listening")
+        if self.nfc_thread:
+            self.nfc_thread.join()
+            print(f"LOGGER::NFC Stop Listening")

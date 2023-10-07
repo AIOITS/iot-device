@@ -163,17 +163,20 @@ class Confirmation(tk.Frame):
           font = FONT_HEADING_4_BOLD,
         )
       ],
-      onClick=lambda: self.change_page(controller, ps.fuel_input.FuelInput, {
-      "choosen_vehicle": self.state["choosen_vehicle"],
-      "choosen_bbm": self.state["choosen_bbm"],
-    })
+      onClick=self.onBackButtonClicked
     )
     
     self.after(50, lambda: controller.nfc_listener.listen(self.onCardScanned))
   
+  def onBackButtonClicked(self):
+    self.controller.show_frame(ps.loading_page.LoadingPage)
+    self.change_page(self.controller, ps.fuel_input.FuelInput, {
+      "choosen_vehicle": self.state["choosen_vehicle"],
+      "choosen_bbm": self.state["choosen_bbm"],
+    })
+  
   def onCardScanned(self, uid):
     print(f"LOGGER::CARD SCANNED {uid}")
-    self.controller.show_frame(ps.loading_page.LoadingPage)
     self.after(50, lambda: self.verify_uid(self.controller, uid))
     
   def format_money(self, number):
@@ -185,6 +188,7 @@ class Confirmation(tk.Frame):
     return locale.format_string('%.*f', (2, number), grouping=True)
   
   def change_page(self, controller, page, data=None):
+    print(f"LOGGER::Trying to stop Nfc Listener")
     controller.nfc_listener.stop_listen()
     controller.show_page(page, data)
     
