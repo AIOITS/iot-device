@@ -27,6 +27,8 @@ class FuelingProcess(tk.Frame):
     self.progress_var = tk.IntVar()
     self.progress_var.initialize(0)
     
+    self.relay_pump_pin = controller.pump_relay.get_fuel_pin(self.state["choosen_bbm"]["name"])
+    
     layout = FuelingProcessTemplate(root=self, controller=controller)
     
     self.title = Label(
@@ -84,7 +86,6 @@ class FuelingProcess(tk.Frame):
       bg=COLOR_BLUE,
     )
     self.amount.grid()
-    
     self.after(1000, lambda: self.update_progress(controller))
     
   def format_money(self, number):
@@ -100,6 +101,8 @@ class FuelingProcess(tk.Frame):
     expenses = float(self.state['expenses'])
     
     if progress_value < 100:
+      controller.pump_relay.turn_on_relay(self.relay_pump_pin)
+      print(f"testing::{self.relay_pump_pin}")
       
       delta_percentage = ((PUMP_DISCHARGE_SPEED) / amount) * 100
       
@@ -116,6 +119,9 @@ class FuelingProcess(tk.Frame):
       self.after(1000, lambda: self.update_progress(controller))
     else:
       self.title.config(text="SELESAI")
+      
+      controller.pump_relay.turn_off_relay(self.relay_pump_pin)
+      
       self.after(1000, lambda: self.redirect_page(controller, 5))
       
   def redirect_page(self, controller, counter):

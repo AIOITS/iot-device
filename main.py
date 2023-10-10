@@ -7,6 +7,7 @@ from helper.api import api
 from helper.cache import Cache
 from helper.keypad import KeypadListener
 from helper.nfc_listener import NfcListener
+from helper.pump import Pump
 import RPi.GPIO as GPIO
 import locale
 
@@ -23,10 +24,6 @@ class MainApplication(Tk):
     super().__init__(*args, **kwargs)
     locale.setlocale(locale.LC_ALL, 'id_ID.UTF-8')
     
-    self.keypad_listener = KeypadListener()
-    self.nfc_listener = NfcListener()
-    self.mac_address = ni.ifaddresses(interface_name)[ni.AF_LINK][0]['addr']
-    
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(PIN_BUTTON_LEFT_TOP, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
     GPIO.setup(PIN_BUTTON_LEFT_MIDDLE, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
@@ -34,6 +31,11 @@ class MainApplication(Tk):
     GPIO.setup(PIN_BUTTON_RIGHT_TOP, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
     GPIO.setup(PIN_BUTTON_RIGHT_MIDDLE, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
     GPIO.setup(PIN_BUTTON_RIGHT_BOTTOM, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+    
+    self.pump_relay = Pump()
+    self.nfc_listener = NfcListener()
+    self.keypad_listener = KeypadListener()
+    self.mac_address = ni.ifaddresses(interface_name)[ni.AF_LINK][0]['addr']
     
     self.title("My GUI App")
 

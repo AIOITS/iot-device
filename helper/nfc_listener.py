@@ -31,8 +31,9 @@ class NfcListener():
 
     def listen(self, callback):
         self.listening = True
-        self.nfc_thread = threading.Thread(target=self._listen_thread, args=(callback,))
-        self.nfc_thread.start()
+        # self.nfc_thread = threading.Thread(target=self._listen_thread, args=(callback,))
+        # self.nfc_thread.start()
+        self._listen_thread(callback)
     
     def _listen_thread(self, callback):
         while self.listening:
