@@ -27,7 +27,7 @@ class FuelInput(tk.Frame):
       bg=COLOR_BLUE,
       bd=0,
       font=FONT_HEADING_3_BOLD,
-      text="JUMLAH LITER PENGISIAN",
+      text="JUMLAH PENGISIAN",
       relief='flat',
     ).grid(row=0, column=0, sticky="w", padx=(PADDING_FROM_FRAME, 0))
     

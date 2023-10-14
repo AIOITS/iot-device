@@ -153,17 +153,17 @@ class FuelSelection(tk.Frame):
         self.first_bbm_name.config(text=f"{self.state['bbm'][i]['name']} (subsidi)" if self.state['bbm'][i]['is_subsidi'] else f"{self.state['bbm'][i]['name']}")
         self.first_bbm_ron.config(text=self.state['bbm'][i]['type'])
         self.first_bbm_number.config(text=f"Rp{self.format_money(self.state['bbm'][i]['price_per_liter'])}/Liter")
-        self.first_bbm_button.config(command=lambda index=i: controller.show_frame(ps.fuel_input.FuelInput, {"choosen_vehicle": self.state["choosen_vehicle"], "choosen_bbm": self.state['bbm'][index]}))
+        self.first_bbm_button.config(command=lambda index=i: self.onChoose_bbm(self.state['bbm'][index]))
       elif ((i + 1) % 3 == 1):
         self.second_bbm_name.config(text=f"{self.state['bbm'][i]['name']} (subsidi)" if self.state['bbm'][i]['is_subsidi'] else f"{self.state['bbm'][i]['name']}")
         self.second_bbm_ron.config(text=self.state['bbm'][i]['type'])
         self.second_bbm_number.config(text=f"Rp{self.format_money(self.state['bbm'][i]['price_per_liter'])}/Liter")
-        self.second_bbm_button.config(command=lambda index=i: controller.show_frame(ps.fuel_input.FuelInput, {"choosen_vehicle": self.state["choosen_vehicle"], "choosen_bbm": self.state['bbm'][index]}))
+        self.second_bbm_button.config(command=lambda index=i: self.onChoose_bbm(self.state['bbm'][index]))
       else:
         self.third_bbm_name.config(text=f"{self.state['bbm'][i]['name']} (subsidi)" if self.state['bbm'][i]['is_subsidi'] else f"{self.state['bbm'][i]['name']}")
         self.third_bbm_ron.config(text=self.state['bbm'][i]['type'])
         self.third_bbm_number.config(text=f"Rp{self.format_money(self.state['bbm'][i]['price_per_liter'])}/Liter")
-        self.third_bbm_button.config(command=lambda index=i: controller.show_frame(ps.fuel_input.FuelInput, {"choosen_vehicle": self.state["choosen_vehicle"], "choosen_bbm": self.state['bbm'][index]}))
+        self.third_bbm_button.config(command=lambda index=i: self.onChoose_bbm(self.state['bbm'][index]))
       
   def update(self, data):
     if (not data): pass
@@ -174,6 +174,19 @@ class FuelSelection(tk.Frame):
       "bbm": self.get_bbm_based_on_category(self.controller.get_cache("bbm"), data["choosen_vehicle"]['bahan_bakar'])
     }
     self.bbm_handler(self.controller)
+    
+  def onChoose_bbm(self, bbm):
+    if (bbm['is_subsidi']):
+      is_eligible = self.verify_subsidy_eligibility(self.state['choosen_vehicle'])
+      if not is_eligible: self.controller.show_frame(ps.information.Information, {"text": "CC KENDARAAN ANDA\nTIDAK SESUAI MENERIMA\nSUBSIDI"})
+    else:
+      self.controller.show_frame(ps.fuel_input.FuelInput, {"choosen_vehicle": self.state["choosen_vehicle"], "choosen_bbm": bbm})
+  
+  def verify_subsidy_eligibility(self, choosen_vehicle):
+    if (choosen_vehicle['jenis'] == 'mobil') and (choosen_vehicle['isi_silinder'] > 1500): return False
+    if (choosen_vehicle['jenis'] == 'sepeda motor') and (choosen_vehicle['isi_silinder'] > 250): return False
+    return True
+  
   
   def format_money(self, number):
     locale.setlocale(locale.LC_ALL, 'id_ID.UTF-8')

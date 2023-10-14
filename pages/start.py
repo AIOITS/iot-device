@@ -75,6 +75,7 @@ class Start(tk.Frame):
               nomor_stnk
               nomor_polisi
               kuota_subsidi
+              isi_silinder
               merk
               model
               bahan_bakar

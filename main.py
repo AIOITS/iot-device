@@ -22,6 +22,7 @@ manifest_page = (
   ps.fuel_selection.FuelSelection,
   ps.fuel_input.FuelInput,
   ps.confirmation.Confirmation,
+  ps.information.Information,
 )
 
 class MainApplication(Tk):
