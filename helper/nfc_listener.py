@@ -10,8 +10,10 @@ nfc = Pn532(PN532_HSU)
 
 class NfcListener():
     def __init__(self) -> None:
-        self.setup()
         self.listening = False
+        self.nfc_thread = None
+        self.rfid_lock = threading.Lock()
+        self.setup()
 
     def setup(self):
         nfc.begin()
@@ -20,14 +22,16 @@ class NfcListener():
             raise RuntimeError("Didn't find PN53x board")
         nfc.setPassiveActivationRetries(0xFF)
         nfc.SAMConfig()
+        self.stop_listen()
 
     def scan_for_card(self):
-        success, uid = nfc.readPassiveTargetID(pn532.PN532_MIFARE_ISO14443A_106KBPS)
-        if success:
-            id = "{}".format(binascii.hexlify(uid).decode('utf-8'))
-            return True, id
-        else:
-            return False, None
+        with self.rfid_lock:
+            success, uid = nfc.readPassiveTargetID(pn532.PN532_MIFARE_ISO14443A_106KBPS)
+            if success:
+                id = "{}".format(binascii.hexlify(uid).decode('utf-8'))
+                return True, id
+            else:
+                return False, None
 
     def listen(self, callback):
         self.listening = True
@@ -35,11 +39,12 @@ class NfcListener():
         self.nfc_thread.start()
     
     def _listen_thread(self, callback):
-        while self.listening:
-            time.sleep(0.3)
+        while True:
+            time.sleep(0.5)
             success, id = self.scan_for_card()
             print(f"LOGGER::NFC Listening")
             if success: break
+            if (not self.listening): break
         if id:
             self.listening = False
             callback(id)

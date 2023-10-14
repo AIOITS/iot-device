@@ -15,8 +15,12 @@ class api():
       }
     }
     ''' % uid
-    user_id = api.get(query)["data"]["sim"][0]["ktp"]["user"]["id"]
+    response_user_id = api.get(query)
+    print('response_user_id')
+    print(response_user_id)
+    if (len(response_user_id["data"]["sim"]) <= 0): return None
     
+    user_id = response_user_id["data"]["sim"][0]["ktp"]["user"]["id"]
     query = '''
       query{
         user(where: {id: {equals: %d}}){

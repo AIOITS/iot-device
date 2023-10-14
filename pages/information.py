@@ -8,6 +8,7 @@ class Information(tk.Frame):
   def __init__(self, parent, controller, data):
     tk.Frame.__init__(self, parent)
     self.controller = controller
+    self.state = {}
     self.grid(row = 0, column = 0)
     
     layout = AnnouncementLayout(root=self, controller=controller)
@@ -22,7 +23,7 @@ class Information(tk.Frame):
     self.information.pack()
     
   def update(self, data):
-    if not data['text']: pass
-    self.information.config(text=data['text'])
+    if ((not data) or (not data['text'])): pass
+    self.information.config(text=data.get("text"))
     self.after(3000, lambda: self.controller.previous_page(self))
     

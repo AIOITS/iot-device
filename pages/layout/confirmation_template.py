@@ -18,7 +18,7 @@ class ConfirmationTemplate:
         self.instruction.configure(bg=COLOR_BLUE)
         
         self.right_bottom = tk.Frame(root)
-        self.right_bottom.place(relx=1, rely=0.85, anchor='e')
+        self.right_bottom.place(relx=1, rely=0.5, anchor='e')
         self.right_bottom.configure(bg=COLOR_BLUE)
         
         controller.button_listener.clear_onPressed()

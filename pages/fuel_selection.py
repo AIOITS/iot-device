@@ -34,7 +34,7 @@ class FuelSelection(tk.Frame):
       font = FONT_HEADING_4_BOLD,
     ).grid(row=0, column=1, sticky='e')
     
-    Button(
+    self.back_button = Button(
       self.layout.left_bottom,
       text ="",
       font = FONT_BUTTON_DECORATION,
@@ -43,7 +43,8 @@ class FuelSelection(tk.Frame):
       width=4,
       relief="flat",
       command=lambda: controller.previous_page(self)
-    ).grid(column=0, row=0, padx=(0, 16))
+    )
+    self.back_button.grid(column=0, row=0, padx=(0, 16))
     
     # First BBM 
     
@@ -164,6 +165,7 @@ class FuelSelection(tk.Frame):
         self.third_bbm_ron.config(text=self.state['bbm'][i]['type'])
         self.third_bbm_number.config(text=f"Rp{self.format_money(self.state['bbm'][i]['price_per_liter'])}/Liter")
         self.third_bbm_button.config(command=lambda index=i: self.onChoose_bbm(self.state['bbm'][index]))
+
       
   def update(self, data):
     if (not data): pass
@@ -174,6 +176,10 @@ class FuelSelection(tk.Frame):
       "bbm": self.get_bbm_based_on_category(self.controller.get_cache("bbm"), data["choosen_vehicle"]['bahan_bakar'])
     }
     self.bbm_handler(self.controller)
+    self.controller.button_listener.onPressed(PIN_BUTTON_RIGHT_TOP, lambda pin: self.first_bbm_button.invoke())
+    self.controller.button_listener.onPressed(PIN_BUTTON_RIGHT_MIDDLE, lambda pin: self.second_bbm_button.invoke())
+    self.controller.button_listener.onPressed(PIN_BUTTON_RIGHT_BOTTOM, lambda pin: self.third_bbm_button.invoke())
+    self.controller.button_listener.onPressed(PIN_BUTTON_LEFT_BOTTOM, lambda pin: self.back_button.invoke())
     
   def onChoose_bbm(self, bbm):
     if (bbm['is_subsidi']):

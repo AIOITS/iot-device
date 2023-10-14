@@ -70,6 +70,14 @@ class MainApplication(Tk):
     self.stack_frame.pop()
     frame = self.stack_frame[-1]
     frame.update(container.state)
+    
+  def hide_page(self, container):
+    frame = self.frames[container]
+    frame.lower()
+    
+    self.stack_frame.pop()
+    current_frame = self.stack_frame[-1]
+    current_frame.update(frame.state)
   
   def get_user_data(self, uid, data):
     return api.get_user_data(uid,data)
@@ -93,4 +101,5 @@ if __name__ == "__main__":
     app.attributes("-fullscreen", True)
     app.wm_title("Welcome to AIOITS")
     app.mainloop()
+    app.nfc_listener.stop_listen()
     GPIO.cleanup()

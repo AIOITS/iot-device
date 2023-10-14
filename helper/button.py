@@ -25,10 +25,5 @@ class ButtonListener():
     GPIO.remove_event_detect(pin)
     
   def clear_onPressed(self):
-    
-    self.onPressed(PIN_BUTTON_LEFT_TOP, lambda pin: None)
-    self.onPressed(PIN_BUTTON_LEFT_MIDDLE, lambda pin: None)
-    self.onPressed(PIN_BUTTON_LEFT_BOTTOM, lambda pin: None)
-    self.onPressed(PIN_BUTTON_RIGHT_TOP, lambda pin: None)
-    self.onPressed(PIN_BUTTON_RIGHT_MIDDLE, lambda pin: None)
-    self.onPressed(PIN_BUTTON_RIGHT_BOTTOM, lambda pin: None)
+    for pin in [ PIN_BUTTON_LEFT_TOP, PIN_BUTTON_LEFT_MIDDLE, PIN_BUTTON_LEFT_BOTTOM, PIN_BUTTON_RIGHT_TOP, PIN_BUTTON_RIGHT_MIDDLE, PIN_BUTTON_RIGHT_BOTTOM]:
+      self.remove_onPressed(pin)

@@ -66,7 +66,7 @@ class Welcome(tk.Frame):
       font = FONT_HEADING_4_BOLD,
     ).grid(row=0, column=1, sticky='e')
     
-    Button(
+    self.back_button = Button(
       self.layout.left_bottom,
       text ="",
       font = FONT_BUTTON_DECORATION,
@@ -75,7 +75,8 @@ class Welcome(tk.Frame):
       width=4,
       relief="flat",
       command=lambda: controller.previous_page(self)
-    ).grid(column=0, row=0, padx=(0, 16))
+    )
+    self.back_button.grid(column=0, row=0, padx=(0, 16))
     
     # First Vehicle 
     
@@ -135,7 +136,7 @@ class Welcome(tk.Frame):
     
     self.layout.create_label(
       container = self.layout.right_bottom_button,
-      text = 'Testing',
+      text = 'Kendaraan Selanjutnya',
       font = FONT_HEADING_4_BOLD,
     ).grid(row=1, column=0, sticky='e')
     
@@ -153,6 +154,7 @@ class Welcome(tk.Frame):
     
   def update(self, data):
     if (not data): pass
+    self.controller.button_listener.clear_onPressed()
     self.state = {
       "vehicle_index": 0,
       "user_data": self.controller.get_cache("user-data"),
@@ -161,6 +163,13 @@ class Welcome(tk.Frame):
     self.saldo_container.config(text=f"Rp{Welcome.format_money(self.state['user_data']['saldo'])}")
     self.next_vehicle_button.config(command=lambda: self.vehicle_handler(self.layout, self.controller))
     self.vehicle_handler(self.layout, self.controller)
+    
+    self.controller.button_listener.onPressed(PIN_BUTTON_RIGHT_TOP, lambda pin: self.first_vehicle_button.invoke())
+    self.controller.button_listener.onPressed(PIN_BUTTON_RIGHT_MIDDLE, lambda pin: self.second_vehicle_button.invoke())
+    self.controller.button_listener.onPressed(PIN_BUTTON_RIGHT_BOTTOM, lambda pin: self.next_vehicle_button.invoke())
+    self.controller.button_listener.onPressed(PIN_BUTTON_LEFT_BOTTOM, lambda pin: self.back_button.invoke())
+
+    
     
   def vehicle_handler(self, layout, controller):    
     self.first_vehicle_name.config(text='')
@@ -182,8 +191,7 @@ class Welcome(tk.Frame):
           self.second_vehicle_name.config(text=f"{self.state['user_data']['ktp']['stnk'][i]['merk']} {self.state['user_data']['ktp']['stnk'][i]['model']}")
           self.second_vehicle_number.config(text=self.state['user_data']['ktp']['stnk'][i]['nomor_polisi'])
           self.second_vehicle_button.grid(column=1, row=0, rowspan=2, padx=(16, 0))
-          self.second_vehicle_button.config(command=lambda index=i: self.choose_vehicle(self.state['user_data']['ktp']['stnk'][index], controller))
-        
+          self.second_vehicle_button.config(command=lambda index=i: self.choose_vehicle(self.state['user_data']['ktp']['stnk'][index], controller))          
         self.state['vehicle_index'] = i + 1
       else:
         self.state['vehicle_index'] = 0

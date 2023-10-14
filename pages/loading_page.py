@@ -7,7 +7,7 @@ from pages.layout.AnnouncementLayout import AnnouncementLayout
 class LoadingPage(tk.Frame):
   def __init__(self, parent, controller, data):
     tk.Frame.__init__(self, parent)
-
+    self.state = {}
     self.grid(row = 0, column = 0)
     
     layout = AnnouncementLayout(root=self, controller=controller)

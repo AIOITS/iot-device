@@ -1,6 +1,7 @@
 from tkinter import *
 import tkinter as tk
 from config.style import *
+from config.constant import *
 import locale
 from .layout.confirmation_template import ConfirmationTemplate
 from .component.button import RightButton, LeftButton
@@ -146,7 +147,7 @@ class Confirmation(tk.Frame):
       font = FONT_HEADING_4_BOLD,
     ).grid(row=0, column=0, sticky='e')
     
-    Button(
+    self.back_button = Button(
       self.layout.right_bottom,
       text ="",
       font = FONT_BUTTON_DECORATION,
@@ -155,7 +156,9 @@ class Confirmation(tk.Frame):
       width=4,
       relief="flat",
       command=lambda: self.onBackButtonClicked()
-    ).grid(column=1, row=0, padx=(16, 0))
+    )
+    self.back_button.grid(column=1, row=0, padx=(16, 0))
+    
   
   def update(self, data):
     if (not data): pass
@@ -174,6 +177,7 @@ class Confirmation(tk.Frame):
     self.amount_information_label.config(text=f"{self.format_decimal(self.state['expenses']/self.state['choosen_bbm']['price_per_liter'])} Liter")
     self.total_information_label.config(text=f"Rp{self.format_money(self.state['expenses'])}")
     self.after(50, lambda: self.controller.nfc_listener.listen(self.onCardScanned))
+    self.controller.button_listener.onPressed(PIN_BUTTON_RIGHT_MIDDLE, lambda pin: self.back_button.invoke())
 
   def onBackButtonClicked(self):
     self.controller.nfc_listener.stop_listen()
@@ -203,7 +207,7 @@ class Confirmation(tk.Frame):
     data = controller.post_data('/history-pengisian', {
       "kategori_pengisian": "subsidi" if self.state['choosen_bbm']['is_subsidi'] else "non_subsidi",
       "jenis_kendaraan": self.state['choosen_vehicle']['jenis'],
-      "jumlah": self.state['expenses']/self.state['choosen_bbm']['price_per_liter'],
+      "jumlah": self.state['expenses'],
       "nomor_stnk": self.state['choosen_vehicle']['nomor_stnk'],
       "bbm_id": int(self.state['choosen_bbm']['id']),
       "device_id": controller.mac_address

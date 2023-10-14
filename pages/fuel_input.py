@@ -6,6 +6,7 @@ from .layout.fuel_input_template import FuelInputTemplate
 from .component.button import RightButton, LeftButton
 from .component.label import CustomLabel, LeftLabel, CenterLabel
 import pages.init as ps
+from config.constant import *
 
 class FuelInput(tk.Frame):
   def __init__(self, parent, controller, data):
@@ -64,7 +65,7 @@ class FuelInput(tk.Frame):
       font = FONT_HEADING_4_BOLD,
     ).grid(row=0, column=1, sticky='e')
     
-    Button(
+    self.back_button = Button(
       self.layout.left_bottom,
       text ="",
       font = FONT_BUTTON_DECORATION,
@@ -73,7 +74,8 @@ class FuelInput(tk.Frame):
       width=4,
       relief="flat",
       command=lambda: controller.previous_page(self)
-    ).grid(column=0, row=0, padx=(0, 16))
+    )
+    self.back_button.grid(column=0, row=0, padx=(0, 16))
     
     self.layout.create_label(
       container = self.layout.right_bottom,
@@ -81,7 +83,7 @@ class FuelInput(tk.Frame):
       font = FONT_HEADING_4_BOLD,
     ).grid(row=0, column=0, sticky='e')
     
-    Button(
+    self.next_button = Button(
       self.layout.right_bottom,
       text ="",
       font = FONT_BUTTON_DECORATION,
@@ -94,17 +96,20 @@ class FuelInput(tk.Frame):
         "choosen_bbm": self.state["choosen_bbm"],
         "expenses": self.get_numeric_value(self.entry.get()),
       })
-    ).grid(column=1, row=0, padx=(16, 0))
+    )
+    self.next_button.grid(column=1, row=0, padx=(16, 0))
   
   def update(self, data):
     if (not data): pass
-    print(data["choosen_vehicle"])
     self.state = {
       "vehicle_index": 0,
       "user_data": self.controller.get_cache("user-data"),
       "choosen_vehicle": data["choosen_vehicle"],
       "choosen_bbm": data["choosen_bbm"],
     }
+    self.controller.button_listener.onPressed(PIN_BUTTON_RIGHT_BOTTOM, lambda pin: self.next_button.invoke())
+    self.controller.button_listener.onPressed(PIN_BUTTON_LEFT_BOTTOM, lambda pin: self.back_button.invoke())
+    
   
   def format_money(self, number):
     locale.setlocale(locale.LC_ALL, 'id_ID.UTF-8')

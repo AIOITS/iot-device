@@ -49,14 +49,14 @@ class Start(tk.Frame):
     #   command = lambda : controller.show_page(ps.welcome.Welcome, {})
     # ).place(relx = 0.5, rely = 0.6, anchor = 'center')
     
-    # self.after(500, self.onListeningHandler)
-    self.after(500, self.onCardScanned('cc02bb4aac2722'))
+    self.after(500, self.onListeningHandler)
+    # self.after(500, self.onCardScanned('cc02bb4aac2722'))
   
   def update(self, data=None):
-    pass
+    if not data: pass
+    self.after(500, self.onListeningHandler)
    
   def onListeningHandler(self):
-    print("TESTING::MASUK")
     self.controller.nfc_listener.listen(self.onCardScanned)
   
   def onCardScanned(self, uid):
@@ -65,6 +65,7 @@ class Start(tk.Frame):
     self.after(50, lambda: self.retrieve_user_data(self.controller, uid))
   
   def retrieve_user_data(self, controller, uid):
+    self.controller.nfc_listener.stop_listen()
     user_data = controller.get_user_data(
       uid=uid,
       data='''
@@ -90,7 +91,12 @@ class Start(tk.Frame):
       "uid": uid
     })
     
-    controller.set_cache("user-jwt", user_jwt["data"]["access_token"])
-    controller.set_cache("user-data", user_data["data"]["user"][0])
-    controller.set_cache("user-uid", uid)
-    controller.show_frame(ps.welcome.Welcome, {"uid": uid})
+    if(not user_data):
+      controller.show_frame(ps.information.Information, {"text": 'KARTU ANDA\nTIDAK TERDAFTAR'})
+      controller.hide_page(ps.loading_page.LoadingPage)
+    else:
+      controller.set_cache("user-jwt", user_jwt["data"]["access_token"])
+      controller.set_cache("user-data", user_data["data"]["user"][0])
+      controller.set_cache("user-uid", uid)
+      controller.show_frame(ps.welcome.Welcome, {"uid": uid})
+      controller.hide_page(ps.loading_page.LoadingPage)
