@@ -15,11 +15,11 @@ class Pump():
     
   def turn_on_relay(self, pin):
     print("turn on relay")
-    GPIO.output(pin, GPIO.LOW)
+    # GPIO.output(pin, GPIO.LOW)
     
   def turn_off_relay(self, pin):
     print("turn off relay")
-    GPIO.output(pin, GPIO.HIGH)
+    # GPIO.output(pin, GPIO.HIGH)
 
   def get_fuel_pin(self, fuel_name: str):
     if fuel_name == "Solar / Biodiesel": return PIN_SOLAR_RELAY

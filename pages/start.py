@@ -46,12 +46,13 @@ class Start(tk.Frame):
     # Button(
     #   self,
     #   text ="Page 2",
-    #   command = lambda : controller.show_page(ps.welcome.Welcome)
+    #   command = lambda : controller.show_page(ps.welcome.Welcome, {})
     # ).place(relx = 0.5, rely = 0.6, anchor = 'center')
     
-    self.after(500, self.onListeningHandler)
+    # self.after(500, self.onListeningHandler)
+    self.after(500, self.onCardScanned('cc02bb4aac2722'))
   
-  def update(self):
+  def update(self, data=None):
     pass
    
   def onListeningHandler(self):
@@ -69,11 +70,11 @@ class Start(tk.Frame):
       data='''
         name,
           saldo,
-          kuota_subsidi
           ktp{
             stnk{
               nomor_stnk
               nomor_polisi
+              kuota_subsidi
               merk
               model
               bahan_bakar
@@ -91,4 +92,4 @@ class Start(tk.Frame):
     controller.set_cache("user-jwt", user_jwt["data"]["access_token"])
     controller.set_cache("user-data", user_data["data"]["user"][0])
     controller.set_cache("user-uid", uid)
-    controller.show_page(ps.welcome.Welcome, {"uid": uid})
+    controller.show_frame(ps.welcome.Welcome, {"uid": uid})

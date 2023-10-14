@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import *
 from config.constant import *
 from config.style import *
 
@@ -28,14 +29,23 @@ class LayoutMaster:
         self.right_bottom.place(relx=1, rely=0.85, anchor='e')
         self.right_bottom.configure(bg=COLOR_BLUE)
         
-        controller.clear_onPressed()
+        controller.button_listener.clear_onPressed()
         
-        controller.onPressed(PIN_BUTTON_LEFT_BOTTOM, lambda pin: self.invoke(self.left_bottom))
-        
-        controller.onPressed(PIN_BUTTON_RIGHT_TOP, lambda pin: self.invoke(self.right_top))
-        controller.onPressed(PIN_BUTTON_RIGHT_MIDDLE, lambda pin: self.invoke(self.right_middle))
-        controller.onPressed(PIN_BUTTON_RIGHT_BOTTOM, lambda pin: self.invoke(self.right_bottom))
+        controller.button_listener.onPressed(PIN_BUTTON_LEFT_BOTTOM, lambda pin: self.invoke(self.left_bottom))
+        controller.button_listener.onPressed(PIN_BUTTON_RIGHT_TOP, lambda pin: self.invoke(self.right_top))
+        controller.button_listener.onPressed(PIN_BUTTON_RIGHT_MIDDLE, lambda pin: self.invoke(self.right_middle))
+        controller.button_listener.onPressed(PIN_BUTTON_RIGHT_BOTTOM, lambda pin: self.invoke(self.right_bottom))
         
     def invoke(self, frame):
         button = frame.winfo_children()[0].winfo_children()[-1]
         if (button.winfo_class() == 'Button'): button.invoke()
+        
+    def create_label(self, container, text, font):
+        return Label(
+            container,
+            fg=COLOR_WHITE,
+            bg=COLOR_BLUE,
+            text = text,
+            font = font,
+            relief='flat',
+        )

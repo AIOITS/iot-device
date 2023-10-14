@@ -58,7 +58,7 @@ class api():
     return response
   
   def post(endpoint, body, headers={}):
-    return requests.post(
+    response = requests.post(
       url= f"{api.base_url}/{endpoint}",
       headers = {
         "Content-Type": "application/json",
@@ -66,3 +66,5 @@ class api():
       },
       json=body
       ).json()
+    print(f'POST {response}')
+    return response

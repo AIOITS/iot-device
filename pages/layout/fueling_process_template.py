@@ -32,5 +32,5 @@ class FuelingProcessTemplate:
         self.remaining_balance.place(relx=0, rely=0.95, anchor='sw')
         self.remaining_balance.configure(bg=COLOR_BLUE)
         
-        controller.clear_onPressed()
+        controller.button_listener.clear_onPressed()
         

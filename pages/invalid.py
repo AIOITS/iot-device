@@ -4,7 +4,7 @@ from config.style import *
 from config.constant import *
 from pages.layout.AnnouncementLayout import AnnouncementLayout
 
-class LoadingPage(tk.Frame):
+class InvalidPage(tk.Frame):
   def __init__(self, parent, controller, data):
     tk.Frame.__init__(self, parent)
 
@@ -14,12 +14,12 @@ class LoadingPage(tk.Frame):
     
     Label(
       layout.content,
-      text = "MOHON TUNGGU",
+      text = "MOHON MAAF CC KENDARAAN ANDA TIDAK SESUAI",
       font = FONT_HEADING_2_BOLD,
       fg=COLOR_WHITE,
       bg=COLOR_BLUE,
     ).pack()
     
-  def update(self, data=None):
+  def update(self):
     pass
     

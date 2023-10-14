@@ -31,17 +31,15 @@ class NfcListener():
 
     def listen(self, callback):
         self.listening = True
-        # self.nfc_thread = threading.Thread(target=self._listen_thread, args=(callback,))
-        # self.nfc_thread.start()
-        self._listen_thread(callback)
+        self.nfc_thread = threading.Thread(target=self._listen_thread, args=(callback,))
+        self.nfc_thread.start()
     
     def _listen_thread(self, callback):
         while self.listening:
             time.sleep(0.3)
             success, id = self.scan_for_card()
             print(f"LOGGER::NFC Listening")
-            if success:
-                break
+            if success: break
         if id:
             self.listening = False
             callback(id)

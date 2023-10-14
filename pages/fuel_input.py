@@ -10,29 +10,29 @@ import pages.init as ps
 class FuelInput(tk.Frame):
   def __init__(self, parent, controller, data):
     tk.Frame.__init__(self, parent)
+    self.controller = controller
     self.grid(row = 0, column = 0)
     self.state = {
       "vehicle_index": 0,
-      "user_data": controller.get_cache("user-data"),
-      "choosen_vehicle": data["choosen_vehicle"],
-      "choosen_bbm": data["choosen_bbm"],
+      "user_data": None,
+      "choosen_vehicle": None,
+      "choosen_bbm": None,
     }
     
-    layout = FuelInputTemplate(root=self, controller=controller)
-    
-    CenterLabel(
-      container=layout.title,
-      components=[
-        CustomLabel(
-          text = "JUMLAH LITER PENGISIAN",
-          font = FONT_HEADING_3_BOLD,
-        )
-      ],
-      padx=(PADDING_FROM_FRAME, 0),
-    )
+    self.layout = FuelInputTemplate(root=self, controller=controller)
     
     Label(
-      layout.price_label,
+      self.layout.title,
+      fg=COLOR_WHITE,
+      bg=COLOR_BLUE,
+      bd=0,
+      font=FONT_HEADING_3_BOLD,
+      text="JUMLAH LITER PENGISIAN",
+      relief='flat',
+    ).grid(row=0, column=0, sticky="w", padx=(PADDING_FROM_FRAME, 0))
+    
+    Label(
+      self.layout.price_label,
       fg=COLOR_WHITE,
       bg=COLOR_BLUE,
       bd=0,
@@ -42,7 +42,7 @@ class FuelInput(tk.Frame):
     ).grid(row=0, column=0, sticky="ew", padx=(0, 16))
     
     self.entry = Entry(
-      layout.price,
+      self.layout.price,
       fg=COLOR_WHITE,
       bg=COLOR_BLUE,
       width=10,
@@ -58,33 +58,53 @@ class FuelInput(tk.Frame):
     self.entry.bind("<KeyRelease>", self.format_and_update_entry)
 
     
-    LeftButton(
-      container=layout.left_bottom,
-      components=[
-        CustomLabel(
-          text ="KEMBALI",
-          font = FONT_HEADING_4_BOLD,
-        ),
-      ],
-      onClick=lambda: controller.show_page(ps.fuel_selection.FuelSelection, {
-        "choosen_vehicle": self.state["choosen_vehicle"],
-      })
-    )
+    self.layout.create_label(
+      container = self.layout.left_bottom,
+      text = 'KEMBALI',
+      font = FONT_HEADING_4_BOLD,
+    ).grid(row=0, column=1, sticky='e')
     
-    RightButton(
-      container=layout.right_bottom,
-      components=[
-        CustomLabel(
-          text ="SELANJUTNYA",
-          font = FONT_HEADING_4_BOLD,
-        )
-      ],
-      onClick=lambda: controller.show_page(ps.confirmation.Confirmation, {
+    Button(
+      self.layout.left_bottom,
+      text ="",
+      font = FONT_BUTTON_DECORATION,
+      fg=COLOR_WHITE,
+      bg=COLOR_WHITE,
+      width=4,
+      relief="flat",
+      command=lambda: controller.previous_page(self)
+    ).grid(column=0, row=0, padx=(0, 16))
+    
+    self.layout.create_label(
+      container = self.layout.right_bottom,
+      text = 'SELANJUTNYA',
+      font = FONT_HEADING_4_BOLD,
+    ).grid(row=0, column=0, sticky='e')
+    
+    Button(
+      self.layout.right_bottom,
+      text ="",
+      font = FONT_BUTTON_DECORATION,
+      fg=COLOR_WHITE,
+      bg=COLOR_WHITE,
+      width=4,
+      relief="flat",
+      command=lambda: controller.show_frame(ps.confirmation.Confirmation, {
         "choosen_vehicle": self.state["choosen_vehicle"],
         "choosen_bbm": self.state["choosen_bbm"],
         "expenses": self.get_numeric_value(self.entry.get()),
       })
-    )
+    ).grid(column=1, row=0, padx=(16, 0))
+  
+  def update(self, data):
+    if (not data): pass
+    print(data["choosen_vehicle"])
+    self.state = {
+      "vehicle_index": 0,
+      "user_data": self.controller.get_cache("user-data"),
+      "choosen_vehicle": data["choosen_vehicle"],
+      "choosen_bbm": data["choosen_bbm"],
+    }
   
   def format_money(self, number):
     locale.setlocale(locale.LC_ALL, 'id_ID.UTF-8')
@@ -108,6 +128,3 @@ class FuelInput(tk.Frame):
 
     self.entry.delete(0, tk.END)
     self.entry.insert(0, formatted_value)
-  
-  def get_bbm_based_on_category(self, bbm, category):
-    return list(filter(lambda it: it['category'] == category, bbm))

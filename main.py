@@ -7,6 +7,7 @@ from helper.api import api
 from helper.cache import Cache
 from helper.keypad import KeypadListener
 from helper.nfc_listener import NfcListener
+from helper.button import ButtonListener
 from helper.pump import Pump
 import RPi.GPIO as GPIO
 import locale
@@ -16,7 +17,11 @@ interface_name = 'eth0'
 
 manifest_page = (
   ps.loading_page.LoadingPage,
-  ps.start.Start
+  ps.start.Start,
+  ps.welcome.Welcome,
+  ps.fuel_selection.FuelSelection,
+  ps.fuel_input.FuelInput,
+  ps.confirmation.Confirmation,
 )
 
 class MainApplication(Tk):
@@ -24,16 +29,9 @@ class MainApplication(Tk):
     super().__init__(*args, **kwargs)
     locale.setlocale(locale.LC_ALL, 'id_ID.UTF-8')
     
-    GPIO.setmode(GPIO.BCM)
-    GPIO.setup(PIN_BUTTON_LEFT_TOP, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-    GPIO.setup(PIN_BUTTON_LEFT_MIDDLE, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-    GPIO.setup(PIN_BUTTON_LEFT_BOTTOM, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-    GPIO.setup(PIN_BUTTON_RIGHT_TOP, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-    GPIO.setup(PIN_BUTTON_RIGHT_MIDDLE, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-    GPIO.setup(PIN_BUTTON_RIGHT_BOTTOM, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-    
     self.pump_relay = Pump()
     self.nfc_listener = NfcListener()
+    self.button_listener = ButtonListener()
     self.keypad_listener = KeypadListener()
     self.mac_address = ni.ifaddresses(interface_name)[ni.AF_LINK][0]['addr']
     
@@ -45,13 +43,14 @@ class MainApplication(Tk):
     self.container.grid_columnconfigure(0, weight=1)
     self.container.configure(bg=COLOR_BLUE)
     
-    self.frames = {} 
+    self.frames = {}
+    self.stack_frame = []
     
     for F in manifest_page:
       self.frames[F] = F(self.container, self, {})
       self.frames[F].configure(bg=COLOR_BLUE)
       self.frames[F].grid(row = 0, column = 0, sticky ="nsew")
-    self.show_frame(ps.start.Start)
+    self.show_frame(ps.start.Start, None)
 
   def show_page(self, container, data=None):
     frame = container(self.container, self, data)
@@ -61,11 +60,15 @@ class MainApplication(Tk):
     
   def show_frame(self, frame, data=None):
     frame = self.frames[frame]
+    self.stack_frame.append(frame)
     frame.tkraise()
-    frame.update()
+    frame.update(data)
   
   def previous_page(self, container):
-    container.destroy()
+    container.lower()
+    self.stack_frame.pop()
+    frame = self.stack_frame[-1]
+    frame.update(container.state)
   
   def get_user_data(self, uid, data):
     return api.get_user_data(uid,data)
@@ -81,22 +84,6 @@ class MainApplication(Tk):
     
   def get_cache(self, cache_name):
     return Cache.get_cache(cache_name)
-  
-  def onPressed(self, pin, function):
-    GPIO.remove_event_detect(pin)
-    GPIO.add_event_detect(pin, GPIO.RISING, callback=function, bouncetime=500)
-  
-  def remove_onPressed(self, pin):
-    GPIO.remove_event_detect(pin)
-    
-  def clear_onPressed(self):
-    
-    self.onPressed(PIN_BUTTON_LEFT_TOP, lambda pin: None)
-    self.onPressed(PIN_BUTTON_LEFT_MIDDLE, lambda pin: None)
-    self.onPressed(PIN_BUTTON_LEFT_BOTTOM, lambda pin: None)
-    self.onPressed(PIN_BUTTON_RIGHT_TOP, lambda pin: None)
-    self.onPressed(PIN_BUTTON_RIGHT_MIDDLE, lambda pin: None)
-    self.onPressed(PIN_BUTTON_RIGHT_BOTTOM, lambda pin: None)
     
 if __name__ == "__main__":
     app = MainApplication()
